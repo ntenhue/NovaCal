@@ -8,7 +8,9 @@
         <!--script src="libs/sha1.js"></script-->
 
         <!--The JS client can be loaded with the following script tag:-->
-        <style type="text/css" rel='stylesheet' src='css/style.css'></style>
+        <link rel='stylesheet' href='css/style.css'>
+
+        
         <script src="https://apis.google.com/js/client.js?onload=OnLoadCallback"></script>
         <!-- Include this jQuery library: -->
         <script type="text/javascript" src="js/jquery-1.9.0.js"></script>
@@ -49,6 +51,11 @@
     </head>
     
     <body>
+        
+        <button ID='authorize-button'>Sign in with google</button>
+        <a href="https://www.google.com/accounts/Logout">Sign out</a>
+        <div ID="workspace"></div> 
+        
 <script>
 
 //d3.jason('event.jason',function(yearlyView){
@@ -112,22 +119,28 @@
 	/* importing the datas   */
 	/*----------------------*/
 	
-	calendarModel.occupancy
-	calendarModel.getOccupancy()
+
 	
 	
 	d3.csv("sample_data_v0.1.csv", function(error, csv) {
 	  var data = d3.nest()
-	    .key(function(d) { return d.Date; })
-	    .rollup(function(d) { return d[0].Duration; })
+	    .key(function(d) {   return d.Date;  })
+	    .rollup(function(d) { return d[0].Duration;   })
 	    .map(csv);
-	
+	    
+	    
 	  rect.filter(function(d) { return d in data; })
 	      .attr("class", function(d) { return "day " + color(data[d]); })
 	    .select("title")
 	      .text(function(d) { return d + ": " + data[d] +" h"; });
+	      
+	      
 	});
+	
 
+
+        
+    
 	
 	function monthPath(t0) {
 	  var t1 = new Date(t0.getFullYear(), t0.getMonth() + 1, 0),
@@ -142,7 +155,7 @@
 	
 	d3.select(self.frameElement).style("height", "2910px");
 //});
-</script>
+        </script>
     </body>
 </html>
 
