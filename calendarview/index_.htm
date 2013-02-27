@@ -2,25 +2,21 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
-        <title>GCalendar</title>
-        <!--script src="libs/jquery-1.9.0.js"></script-->
-        <!--script src="libs/oauth.js"></script-->
-        <!--script src="libs/sha1.js"></script-->
+        <title>Yearly View</title>
 
-        <!--The JS client can be loaded with the following script tag:-->
+		<script src="http://d3js.org/d3.v3.min.js"></script>
+        <script type="text/javascript" src="js/jquery-1.9.0.js"></script>
+        <script src="https://apis.google.com/js/client.js?onload=OnLoadCallback"></script>
+                
         <link rel='stylesheet' href='css/style.css'>
 
-        
-        <script src="https://apis.google.com/js/client.js?onload=OnLoadCallback"></script>
-        <!-- Include this jQuery library: -->
-        <script type="text/javascript" src="js/jquery-1.9.0.js"></script>
         <script type="text/javascript" src="js/authentification.js"></script>
         <script type="text/javascript" src="js/AskGoogle.js"></script>
         <script type="text/javascript" src="js/CalendarModel.js"></script>
         <script type="text/javascript" src="js/ViewAndController.js"></script>
-		<script src="http://d3js.org/d3.v3.min.js"></script>
 		<script type='text/javascript' src='js/yearView.js'></script>
 
+		<!---initialisation of the model and controller--->
         <script type="text/javascript" >
             $(document).ready(function() {
                 appModel = new AppModel();
@@ -68,6 +64,32 @@
 	    week = d3.time.format("%U"),	//%U week number of the year (Sunday as the first day of the week) as a decimal number [00,53].
 	    percent = d3.format(".1%"),		//
 	    format = d3.time.format("%Y-%m-%d");
+	    
+	    
+	/*------------------------*/
+	/* importing the datas   */
+	/*----------------------*/
+	//d3-array:https://github.com/mbostock/d3/wiki/Arrays
+		
+	d3.csv("dataset/sample_data_v0.1.csv", function(error, csv) {
+		
+		//Getting the associative array from datasource
+	  var data = d3.nest()		//Nesting allows elements in an array to be grouped into a hierarchical tree structure;
+	    .key(function(d) {   return d.Date;  })		//The levels in the tree are specified by key functions
+	    .rollup(function(d) { return d[0].Duration;   })		//An optional rollup function will collapse the elements in each leaf node using a summary function
+	    														//The return value of the rollup function will replace the array of leaf values in either the associative array returned by the map operator, or
+	    										
+	    .map(csv);			//Applies the nest operator to the specified array, returning an associative array. 
+	    
+	    //selector,filter:https://github.com/mbostock/d3/wiki/Selections#wiki-filter
+	  rect.filter(function(d) { return d in data; })		//Filters the selection, returning a new selection that contains only the elements for which the specified selector is true.
+	      .attr("class", function(d) { return "day " + color(data[d]); })	//set the class of the grid to a particular color class according to the value
+	    .select("title")
+	      .text(function(d) { return d + ": " + data[d] +" h"; });
+	      
+	      
+	});
+	
 	
 	var color = d3.scale.quantize()		//quantize() ,output discrete range, the mapping is linear
 	    //.domain([-.05, .05])
@@ -114,33 +136,6 @@
 	  .enter().append("path")
 	    .attr("class", "month")
 	    .attr("d", monthPath);		//set the border of a month on the graph, using the function monthPath
-	
-	/*------------------------*/
-	/* importing the datas   */
-	/*----------------------*/
-	
-
-	
-	
-	d3.csv("sample_data_v0.1.csv", function(error, csv) {
-	  var data = d3.nest()
-	    .key(function(d) {   return d.Date;  })
-	    .rollup(function(d) { return d[0].Duration;   })
-	    .map(csv);
-	    
-	    
-	  rect.filter(function(d) { return d in data; })
-	      .attr("class", function(d) { return "day " + color(data[d]); })
-	    .select("title")
-	      .text(function(d) { return d + ": " + data[d] +" h"; });
-	      
-	      
-	});
-	
-
-
-        
-    
 	
 	function monthPath(t0) {
 	  var t1 = new Date(t0.getFullYear(), t0.getMonth() + 1, 0),
