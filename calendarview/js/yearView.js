@@ -46,7 +46,7 @@ function yearView(){
 
 	
 	
-	var svg = d3.select("body").selectAll("svg")
+	var svg = d3.select("#mycanvas").selectAll("svg")
     //.data(d3.range(1990, 2011))
 	 .data(d3.range(2011, 2014))
   .enter().append("svg")

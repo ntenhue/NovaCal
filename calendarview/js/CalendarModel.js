@@ -14,42 +14,51 @@ function CalendarModel(){
 	
 
 	
-	this.setCalendars = function (items) {	
-		this.calendars = items;
-		this.notifyObservers("calendars");	}
-	this.setEvents = function (items) {	
-		this.events = items;
-		
-		this.getEventsDuration();
-		this.getDurationsPerDay();
-		
-		this.notifyObservers("events");	}	
-	
-	
-	this.getCalendars = function () {
-		return this.calendars;	}
-	this.getEvents = function () {	
-		return this.events;	}	
+this.addCalendars = function (items) {	
+	this.calendars = items;
+	this.notifyObservers("calendars");	}
 
-	
-	this.getOccupancy = function () {
-		return this.occupancy;	}
-	
+this.clearCalendars = function () {	
+	this.evecalendarsnts=0;
+	this.notifyObservers("calendars");	
+	}	
 
-	
-	this.findCalendarBySummary = function (summary){
-		for (var i in this.calendars){
-			if (this.calendars[i].summary==summary){
-				return	this.calendars[i].id;
-				}
+this.addEvents = function (items) {	
+	this.events=this.events.concat(items);
+	this.updateEventsDuration();
+	this.updateOccupancy();
+	this.notifyObservers("events");	
+	}	
+
+this.clearEvents = function () {	
+	this.events=0;
+	this.notifyObservers("events");	
+	}	
+
+this.getCalendars = function () {
+	return this.calendars;	}
+this.getEvents = function () {	
+	return this.events;	}	
+
+
+this.getOccupancy = function () {
+	return this.occupancy;	}
+
+
+
+this.findCalendarBySummary = function (summary){
+	for (var i in this.calendars){
+		if (this.calendars[i].summary==summary){
+			return	this.calendars[i].id;
 			}
 		}
+	}
 	
 	
 
 	
 	
-this.getEventsDuration = function () {
+this.updateEventsDuration = function () {
 
 	// parse a date based on a dateDay field (e.g. 2011-09-03) and a dateTime field (e.g. 09:30)
 	var parseDate = function (dateDay, dateTime) {
@@ -85,35 +94,35 @@ this.getEventsDuration = function () {
 }
 	
 	
-	this.getDurationsPerDay = function () {
-		this.occupancy = [];
-		var pushNeeded=true;
+this.updateOccupancy = function () {
+	this.occupancy = [];
+	var pushNeeded=true;
+	
+	for (var i in this.events){	if (this.events[i].duration<24){
 		
-		for (var i in this.events){	if (this.events[i].duration<24){
-			
-			for (var j in this.occupancy){
-				if (this.events[i].start.date == this.occupancy[j].date) {
-					
-					this.occupancy[j].hoursBusy += this.events[i].duration;
-					pushNeeded = false;
-					break;
-					
-					} else {
+		for (var j in this.occupancy){
+			if (this.events[i].start.date == this.occupancy[j].date) {
+				
+				this.occupancy[j].hoursBusy += this.events[i].duration;
+				pushNeeded = false;
+				break;
+				
+				} else {
 
-					if (j==this.occupancy.length-1)	pushNeeded = true;
+				if (j==this.occupancy.length-1)	pushNeeded = true;
 
-					}
 				}
-			
-			if (pushNeeded) {
-				this.occupancy.push({'date':this.events[i].start.date,'hoursBusy':this.events[i].duration});
-				}
-			
-		}}
+			}
 		
+		if (pushNeeded) {
+			this.occupancy.push({'date':this.events[i].start.date,'hoursBusy':this.events[i].duration});
+			}
 		
-		
-	}
+	}}
+	
+	
+	
+}
 	
 /*****************************************  
     Observable implementation    

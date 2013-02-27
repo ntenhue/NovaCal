@@ -5,7 +5,7 @@ function AskGoogle(calendarModel) {
 		this.request =  gapi.client.calendar.calendarList.list();	
 		this.request.execute(function(resp) {
 			console.log("received calendars list:", resp); 
-			calendarModel.setCalendars(resp.items);
+			calendarModel.addCalendars(resp.items);
 			});
 		}
 	
@@ -18,8 +18,9 @@ function AskGoogle(calendarModel) {
 		});
 		this.request.execute(function(resp){
 			console.log("received events list:", resp); 
-			calendarModel.setEvents(resp.items);
+			calendarModel.addEvents(resp.items);
 		 	});
 		}
 }
+
 
