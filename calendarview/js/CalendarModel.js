@@ -6,7 +6,7 @@
 function CalendarModel(){
 	this.calendars= new Array();
 	this.events= new Array();
-	this.occupancy = [{"date":"2012-02-16","hoursBusy":5},{"date":"2012-02-17","hoursBusy":8},{"date":"2012-02-18","hoursBusy":2}];
+	this.occupancy =new Array();  // [{"date":"2012-02-16","hoursBusy":5},{"date":"2012-02-17","hoursBusy":8},{"date":"2012-02-18","hoursBusy":2}];
 	
 
 
