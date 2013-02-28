@@ -1,5 +1,7 @@
 function yearView(){
 
+	
+	$("#mycanvas").empty();
 
 	var width = 960,
 	    height = 136,
@@ -41,7 +43,7 @@ function yearView(){
 
 	var color = d3.scale.quantize()		//quantize() ,output discrete range, the mapping is linear
 	    //.domain([-.05, .05])
-		.domain([11.0, 0.0])	//input domain
+		.domain([24.0, 0.0])	//input domain
 	    .range(d3.range(11).map(function(d) { return "q" + d + "-11"; }));  //output range
 
 	

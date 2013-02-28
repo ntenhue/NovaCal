@@ -104,7 +104,7 @@ function ViewController(view, calendarModel) {
 	view.getEventsButton.click(function () { 
 		askGoogle.calendarsEventsList(
 				calendarModel.findCalendarBySummary(
-						view.chosenIdTextField.val()));});
+						view.chosenIdTextField.val()),null);});
 
 
 }
