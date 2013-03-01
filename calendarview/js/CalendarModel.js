@@ -56,6 +56,44 @@ this.findCalendarBySummary = function (summary){
 	
 	
 
+this.getEventsInRange = function(fromAsked,tillAsked){
+	// this function receives a range of dates in format "yyyy-mm-dd"
+	// and returns an array of events which fall between the specified frames
+	// valid requests formats: 
+	// 1 to 15 march inclusive: ("2013-03-01","2013-03-15") 
+	// all march: ("2013-03-01","2013-03-99")
+	// all march: ("2013-03","2013-03")
+	// all march: ("2013-03")
+	// all 2013:  ("2013")
+	
+	if (tillAsked == null) tillAsked=fromAsked;
+	var result=[];
+	
+	var from = {"y":0,"m":0,"d":0}
+	var till = {"y":9999,"m":99,"d":99}
+	
+	
+	if (fromAsked.length>=4) from.y = fromAsked.substring(0,4);
+	if (fromAsked.length>=7) from.m = fromAsked.substring(5,7);
+	if (fromAsked.length>=9) from.d = fromAsked.substring(8,10);
+							 from.date = new Date(from.y,from.m-1,from.d);
+	
+	if (tillAsked.length>=4) till.y = tillAsked.substring(0,4);
+	if (tillAsked.length>=7) till.m = tillAsked.substring(5,7);
+	if (tillAsked.length>=9) till.d = tillAsked.substring(8,10);
+							 till.date = new Date(till.y,till.m-1,till.d);
+		
+	for (var i in this.events){
+		var eventDateStart = new Date (this.events[i].start.date.substring(0,4),
+									   this.events[i].start.date.substring(5,7)-1,
+									   this.events[i].start.date.substring(8,10));
+		if(eventDateStart>=from.date && eventDateStart<=till.date) result.push (this.events[i]);
+		}
+	
+	return result;
+	}
+
+
 	
 	
 this.updateEventsDuration = function () {
