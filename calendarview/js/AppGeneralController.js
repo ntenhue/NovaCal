@@ -18,6 +18,8 @@ function AppGeneralController(appModel) {
             askGoogle = new AskGoogle(calendarModel);
             view = new View($("#workspace"), calendarModel);
             viewController = new ViewController(view, calendarModel);
+            
+            askGoogle.calendarsList();
             }
 
         }

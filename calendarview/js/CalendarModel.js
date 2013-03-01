@@ -26,12 +26,14 @@ this.clearCalendars = function () {
 this.addEvents = function (items) {	
 	this.events=this.events.concat(items);
 	this.updateEventsDuration();
-	this.updateOccupancy();
+	this.updateEventColor();
+	this.occupancy = this.updateOccupancy(this.events);
 	this.notifyObservers("events");	
 	}	
 
 this.clearEvents = function () {	
-	this.events=0;
+	this.events=[];
+	this.occupancy=[];
 	this.notifyObservers("events");	
 	}	
 
@@ -94,6 +96,8 @@ this.getEventsInRange = function(fromAsked,tillAsked){
 	}
 
 
+
+
 	
 	
 this.updateEventsDuration = function () {
@@ -132,33 +136,50 @@ this.updateEventsDuration = function () {
 }
 	
 	
-this.updateOccupancy = function () {
-	this.occupancy = [];
+this.updateEventColor = function () {
+	for (var i in this.events){	if (this.events[i].colorId == null) this.events[i].colorId = 0; }
+}
+
+
+
+
+
+this.updateOccupancy = function (events) {
+	
+	var occupancy = [];
 	var pushNeeded=true;
 	
-	for (var i in this.events){	if (this.events[i].duration<24){
+	for (var i in events){	if (events[i].duration<24){
 		
-		for (var j in this.occupancy){
-			if (this.events[i].start.date == this.occupancy[j].date) {
+		for (var j in occupancy){
+			if (events[i].start.date == occupancy[j].date) {
 				
-				this.occupancy[j].hoursBusy += this.events[i].duration;
+				occupancy[j].hoursBusy += events[i].duration;
+				occupancy[j].hoursByColor[events[i].colorId] += events[i].duration;
+				
 				pushNeeded = false;
 				break;
 				
 				} else {
 
-				if (j==this.occupancy.length-1)	pushNeeded = true;
+				if (j==occupancy.length-1)	pushNeeded = true;
 
 				}
 			}
 		
 		if (pushNeeded) {
-			this.occupancy.push({'date':this.events[i].start.date,'hoursBusy':this.events[i].duration});
+			occupancy.push({'date':' ', 'hoursBusy':0, 'hoursByColor':[0,0,0,0,0,0,0,0,0,0,0,0] });
+			
+			occupancy[occupancy.length-1].date = events[i].start.date;
+			occupancy[occupancy.length-1].hoursBusy = events[i].duration;
+			occupancy[occupancy.length-1].hoursByColor[events[i].colorId] = events[i].duration;
+			
 			}
 		
 	}}
 	
 	
+	return occupancy;
 	
 }
 	

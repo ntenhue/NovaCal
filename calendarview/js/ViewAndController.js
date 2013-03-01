@@ -1,7 +1,7 @@
 function View(parent, calendarModel) {
 	
 	this.listCalendarsButton = $("<button>");
-	this.listCalendarsButton.html("List calendars");
+	this.listCalendarsButton.html("Update calendars");
 	this.listCalendarsList = $("<ul>");
 
 	this.inputForm = $("<form>");
@@ -75,12 +75,14 @@ function View(parent, calendarModel) {
 			
 			}	
 		
+		this.tableOccupancyList.empty();
 		var occupancy = calendarModel.getOccupancy();
 		for (var i in occupancy){
 			var tableRow = $("<tr>");
 			tableRow.html(
 					" <td> date: " + occupancy[i].date+ " </td>  "+		
-					" <td> hoursBusy: "+ occupancy[i].hoursBusy+" </td> ");
+					" <td> ----- hoursBusy: "+ occupancy[i].hoursBusy+" </td> " + 
+					" <td> ----- hoursByColor: "+ occupancy[i].hoursByColor+" </td> " );
 				
 			this.tableOccupancyList.append(tableRow);	
 			
@@ -102,6 +104,7 @@ function ViewController(view, calendarModel) {
 		askGoogle.calendarsList();});
 	
 	view.getEventsButton.click(function () { 
+		calendarModel.clearEvents();
 		askGoogle.calendarsEventsList(
 				calendarModel.findCalendarBySummary(
 						view.chosenIdTextField.val()),null);});
