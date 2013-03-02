@@ -19,7 +19,7 @@ function AppGeneralController(appModel) {
             view = new View($("#workspace"), calendarModel);
             viewController = new ViewController(view, calendarModel);
             
-            askGoogle.calendarsList();
+            view.listCalendarsButton.click();
             }
 
         }

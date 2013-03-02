@@ -2,22 +2,13 @@ function View(parent, calendarModel) {
 	
 	this.listCalendarsButton = $("<button>");
 	this.listCalendarsButton.html("Update calendars");
-	this.listCalendarsList = $("<ul>");
-
-	this.inputForm = $("<form>");
-	this.inputForm.html("Choose one and paste here the name");
+	this.listCalendarsForm = $("<form>");
 	
-	this.chosenIdTextField = $("<input>");
-	this.chosenIdTextField.attr = {
-			type: "text",
-			name: "Choose one and paste here the name", 
-			value: ""
-				};
-	this.inputForm.append(this.chosenIdTextField);  
 	
 	this.getEventsButton = $("<button>");
-	this.getEventsButton.html("Get events");	
+	this.getEventsButton.html("Load events");	
 	
+	/*
 	this.tableEvents = $("<table>");
 	this.tableEventsList = $("<tbody>");
 	this.tableEvents.append(this.tableEventsList);
@@ -26,8 +17,8 @@ function View(parent, calendarModel) {
 	this.tableOccupancyList = $("<tbody>");
 	this.tableOccupancy.append(this.tableOccupancyList);
 	
-	parent.append(this.listCalendarsButton, this.listCalendarsList, this.inputForm,
-			this.getEventsButton, this.resultDiv, this.tableEvents,   this.tableOccupancy);
+	*/
+	parent.append(this.listCalendarsButton, this.listCalendarsForm, this.getEventsButton);
 	
 	
 
@@ -42,15 +33,19 @@ function View(parent, calendarModel) {
 	this.update = function(arg){
 		
 		if (arg = "calendars") {
-			this.listCalendarsList.empty();
+			this.listCalendarsForm.empty();
 			
 		var calendars = calendarModel.getCalendars();
 		for (var i in calendars){
-			var listItem = $("<li>");
-			listItem.html("<li>"+calendars[i].summary+"</li>");
-			this.listCalendarsList.append(listItem);
+			var listItem= $('<input type="radio" name="radioCalendars">');
+			listItem.attr("value",i);
+			listItem.attr("id","radioCalendar"+i);
+			var listLabel = $('<label>');
+			listLabel.attr("for","radioCalendar"+i);
+			listLabel.html(calendars[i].summary+'<br>');
+			this.listCalendarsForm.append(listItem,listLabel);
 			}	
-		this.chosenIdTextField.attr= {value: calendars[calendars.length-1].summary};
+		//this.chosenIdTextField.attr= {value: calendars[calendars.length-1].summary};
 		}	
 		/*
 		if (arg = "events") {
@@ -101,13 +96,13 @@ function ViewController(view, calendarModel) {
 
 	
 	view.listCalendarsButton.click(function () { 
-		askGoogle.calendarsList();});
+		askGoogle.loadCalendars();});
 	
 	view.getEventsButton.click(function () { 
-		calendarModel.clearEvents();
-		askGoogle.calendarsEventsList(
-				calendarModel.findCalendarBySummary(
-						view.chosenIdTextField.val()),null);});
+		var k = $('input[name=radioCalendars]:checked').val();
+		calendarModel.clearEvents(k);
+		askGoogle.loadEvents(k,null);
+		});
 
 
 }

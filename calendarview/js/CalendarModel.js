@@ -5,7 +5,7 @@
 
 function CalendarModel(){
 	this.calendars= new Array();
-	this.events= new Array();
+//	this.events= new Array();
 	this.occupancy =new Array();  // [{"date":"2012-02-16","hoursBusy":5},{"date":"2012-02-17","hoursBusy":8},{"date":"2012-02-18","hoursBusy":2}];
 	
 
@@ -15,50 +15,46 @@ function CalendarModel(){
 
 	
 this.addCalendars = function (items) {	
-	this.calendars = items;
-	this.notifyObservers("calendars");	}
-
-this.clearCalendars = function () {	
-	this.evecalendarsnts=0;
+	for (var i in items){items.events = [];}
+	this.calendars = this.calendars.concat(items);
 	this.notifyObservers("calendars");	
-	}	
+	}
 
-this.addEvents = function (items) {	
-	this.events=this.events.concat(items);
-	this.updateEventsDuration();
-	this.updateEventColor();
-	this.occupancy = this.updateOccupancy(this.events);
+this.addEvents = function (k, items) {	
+	this.calendars[k].events = this.calendars[k].events.concat(items);
+	this.calendars[k].events = this.updateEventsDuration(this.calendars[k].events);
+	this.calendars[k].events = this.updateEventColor(this.calendars[k].events);
+	this.occupancy 	= this.updateOccupancy(this.calendars[k].events);
 	this.notifyObservers("events");	
 	}	
 
-this.clearEvents = function () {	
-	this.events=[];
+this.clearCalendars = function () {	
+	this.calendars=[];
+	this.notifyObservers("calendars");	
+	}	
+this.clearEvents = function (k) {	
+	this.calendars[k].events=[];
 	this.occupancy=[];
 	this.notifyObservers("events");	
 	}	
 
-this.getCalendars = function () {
-	return this.calendars;	}
-this.getEvents = function () {	
-	return this.events;	}	
-
-
-this.getOccupancy = function () {
-	return this.occupancy;	}
+this.getCalendars = function () { return this.calendars;	        }
+this.getEvents = function (k) 	{ return this.calendars[k].events;	}	
+this.getOccupancy = function () { return this.occupancy;	        }
 
 
 
 this.findCalendarBySummary = function (summary){
 	for (var i in this.calendars){
 		if (this.calendars[i].summary==summary){
-			return	this.calendars[i].id;
+			return	i;
 			}
 		}
 	}
 	
 	
 
-this.getEventsInRange = function(fromAsked,tillAsked){
+this.getEventsInRange = function(events, fromAsked,tillAsked){
 	// this function receives a range of dates in format "yyyy-mm-dd"
 	// and returns an array of events which fall between the specified frames
 	// valid requests formats: 
@@ -86,10 +82,10 @@ this.getEventsInRange = function(fromAsked,tillAsked){
 							 till.date = new Date(till.y,till.m-1,till.d);
 		
 	for (var i in this.events){
-		var eventDateStart = new Date (this.events[i].start.date.substring(0,4),
-									   this.events[i].start.date.substring(5,7)-1,
-									   this.events[i].start.date.substring(8,10));
-		if(eventDateStart>=from.date && eventDateStart<=till.date) result.push (this.events[i]);
+		var eventDateStart = new Date (events[i].start.date.substring(0,4),
+									   events[i].start.date.substring(5,7)-1,
+									   events[i].start.date.substring(8,10));
+		if(eventDateStart>=from.date && eventDateStart<=till.date) result.push (events[i]);
 		}
 	
 	return result;
@@ -100,7 +96,7 @@ this.getEventsInRange = function(fromAsked,tillAsked){
 
 	
 	
-this.updateEventsDuration = function () {
+this.updateEventsDuration = function (events) {
 
 	// parse a date based on a dateDay field (e.g. 2011-09-03) and a dateTime field (e.g. 09:30)
 	var parseDate = function (dateDay, dateTime) {
@@ -119,28 +115,28 @@ this.updateEventsDuration = function () {
 
 
 		
-	for (var i in this.events){
-		if (this.events[i].start.hasOwnProperty("dateTime")){
-			this.events[i].start.date = this.events[i].start.dateTime.substring(0,10);
-			this.events[i].start.time = this.events[i].start.dateTime.substring(11,16);
-			this.events[i].end.date = this.events[i].end.dateTime.substring(0,10);
-			this.events[i].end.time = this.events[i].end.dateTime.substring(11,16);
+	for (var i in events){
+		if (events[i].start.hasOwnProperty("dateTime")){
+			// this is a non-whole day event. we need to add there date and time props
+			events[i].start.date = events[i].start.dateTime.substring(0,10);
+			events[i].start.time = events[i].start.dateTime.substring(11,16);
+			events[i].end.date = events[i].end.dateTime.substring(0,10);
+			events[i].end.time = events[i].end.dateTime.substring(11,16);
 			
-			this.events[i].duration=dateDiff(parseDate(this.events[i].start.date,this.events[i].start.time), 
-									 		 parseDate(this.events[i].end.date,this.events[i].end.time));
+			events[i].duration=dateDiff(parseDate(events[i].start.date,events[i].start.time), 
+									 		 parseDate(events[i].end.date,events[i].end.time));
 		} else {
-			this.events[i].duration=dateDiff(parseDate(this.events[i].start.date,"00:00"), 
-			 		 						 parseDate(this.events[i].end.date,"00:00")); 
+			// this is a whole-day event
+			events[i].duration=dateDiff(parseDate(events[i].start.date,"00:00"), 
+			 		 						 parseDate(events[i].end.date,"00:00")); 
 		}
 	}
-}
+	return events;}
 	
 	
-this.updateEventColor = function () {
-	for (var i in this.events){	if (this.events[i].colorId == null) this.events[i].colorId = 0; }
-}
-
-
+this.updateEventColor = function (events) {
+	for (var i in events){	if (events[i].colorId == null) events[i].colorId = 0; }
+	return events;}
 
 
 

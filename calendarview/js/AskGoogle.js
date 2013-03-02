@@ -1,7 +1,7 @@
 
 function AskGoogle(calendarModel) {
 	
-	this.calendarsList = function() {
+	this.loadCalendars = function() {
 		this.request =  gapi.client.calendar.calendarList.list();	
 		this.request.execute(function(resp) {
 			console.log("received calendars list:", resp); 
@@ -9,9 +9,9 @@ function AskGoogle(calendarModel) {
 			});
 		}
 	
-	this.calendarsEventsList = function(calendarId, pageToken) {
+	this.loadEvents = function(k, pageToken) {
 		this.request = gapi.client.calendar.events.list({
-			'calendarId': calendarId, 
+			'calendarId': calendarModel.calendars[k].id, 
 			'maxResults': 250,
 			'singleEvents': true,
 			'showDeleted': false,
@@ -23,7 +23,7 @@ function AskGoogle(calendarModel) {
 		this.request.execute(function(resp){
 			console.log("received events list:", resp); 
 			
-			if (resp.items != null) { calendarModel.addEvents(resp.items); }	
+			if (resp.items != null) { calendarModel.addEvents(k,resp.items); }	
 			if (resp.nextPageToken != null) { 
 				// if there are more pages to show,
 				// the function calls itself with a nextPageToken
