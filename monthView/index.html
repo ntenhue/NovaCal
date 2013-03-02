@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>MonthlyView</title>
+
+	<script src="http://d3js.org/d3.v3.min.js"></script>
+    <script src="js/jquery-1.9.0.js"></script>
+    <script src="https://apis.google.com/js/client.js?onload=OnLoadCallback"></script>
+            
+    <link rel='stylesheet' href='css/style.css'>
+
+    <script type='text/javascript' src='js/AppModel.js'></script>   	
+    <script type='text/javascript' src='js/AppGeneralController.js'></script>	
+    <script type="text/javascript" src="js/authentification.js"></script>
+    <script type="text/javascript" src="js/AskGoogle.js"></script>    	
+    <script type="text/javascript" src="js/CalendarModel.js"></script>
+    <script type="text/javascript" src="js/ViewAndController.js"></script>
+    
+	<!---initialisation of the model and controller--->
+    <script type="text/javascript" >
+        $(document).ready(function() {
+            appModel = new AppModel();
+            appGeneralController = new AppGeneralController(appModel);
+            });
+    </script>
+</head>
+
+<body>
+    <div ID="workspace">
+    <button ID='authorize-button'>Sign in with google</button>
+    
+    <a href="https://www.google.com/accounts/Logout">Sign out</a>  
+        
+    </div> 
+    
+    <button ID='show-button'>Show</button>
+    
+<div ID="mycanvas"></div> 
+
+
+<script type='text/javascript' src='js/monthView.js'></script>
+
+<script>
+
+	   
+	   var yearViewButton = document.getElementById('show-button');
+                yearViewButton.onclick = monthView;
+	   
+		//yearView = new YearView(appModel);
+
+
+
+
+</script>
+
+</body>
+</html>
