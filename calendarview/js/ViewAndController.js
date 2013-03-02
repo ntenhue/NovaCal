@@ -52,7 +52,7 @@ function View(parent, calendarModel) {
 			}	
 		this.chosenIdTextField.attr= {value: calendars[calendars.length-1].summary};
 		}	
-		
+		/*
 		if (arg = "events") {
 		this.tableEventsList.empty();
 		
@@ -90,7 +90,7 @@ function View(parent, calendarModel) {
 			}
 		
 		
-		}
+		}*/
 	}
 		
 	

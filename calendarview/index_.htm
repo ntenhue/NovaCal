@@ -16,7 +16,7 @@
     <script type="text/javascript" src="js/AskGoogle.js"></script>    	
     <script type="text/javascript" src="js/CalendarModel.js"></script>
     <script type="text/javascript" src="js/ViewAndController.js"></script>
-
+	<script type='text/javascript' src='js/legend.js'></script>
     
 	<!---initialisation of the model and controller--->
     <script type="text/javascript" >
@@ -28,29 +28,48 @@
 </head>
 
 <body>
-    <div ID="workspace">
-    <button ID='authorize-button'>Sign in with google</button>
-    <a href="https://www.google.com/accounts/Logout">Sign out</a>  
-        
-    </div> 
-    
-    <button ID='show-button'>Show</button>
-    
-<div ID="mycanvas"></div> 
-
-    <script type='text/javascript' src='js/yearView.js'></script>
-<script>
-
-	   
-	   var yearViewButton = document.getElementById('show-button');
-                yearViewButton.onclick = yearView;
-	   
-//yearView = new YearView(appModel);
+	
+	<div id="wrap">
+		<div id="top">
+				    <a href="https://www.google.com/accounts/Logout"><h4 align="right">Sign out</h4></a>
+		</div>
+		
+		<div id="logo">
 
 
-
-
-</script>
+			<button id='authorize-button'>Sign in with google</button>
+		    <div id="workspace"> </div> 
+		    <button id='show-button'>Show</button>
+		    <button id='legend-button'>Show Legend</button>		
+			<script type='text/javascript' src='js/yearView.js'></script>
+			<script>
+				var yearViewButton = document.getElementById('show-button');
+			                yearViewButton.onclick = yearView;
+				//yearView = new YearView(appModel);
+				var legendViewButton = document.getElementById('legend-button');
+			                legendViewButton.onclick = legendView;
+			</script>
+			<br><br>
+			<div>C3 adds a Yearly Overview to your Google Calendar. <br>
+			 Ranging from light to dark colors, it shows if <br>
+			 you have a lot of free time to no free time at all.<br>
+			Hover over a day to see details. <br>
+			Inspired by <a href="http://bl.ocks.org/mbostock/">Mike Bostocks</a><a> visualization<a href="http://bl.ocks.org/mbostock/4063318"> Calendar View</a><br> 
+			 -See the Full Picture - with C3
+			</div>
+			</div>
+		<div id="yearVis" style="position: absolute; left: 260px">
+			<table width="1000px">
+			<td>
+			<div id="mycanvas" class="canvas" > </div>
+			</td>
+			<td align="middle">
+			<img src="img/logo.gif"/><br>
+			<div id="mylegend" class="legend"> </div> 	
+			</td>
+			</table>
+		</div>
+</div>
 </body>
 </html>
 

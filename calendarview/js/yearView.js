@@ -3,9 +3,10 @@ function yearView(){
 	
 	$("#mycanvas").empty();
 
-	var width = 960,
-	    height = 136,
-	    cellSize = 17; // cell size
+	var margin = {top: 19, right: 20, bottom: 40, left: 10},
+    width = 960 - margin.right - margin.left, // width
+    height = 200 - margin.top - margin.bottom, // height
+    cellSize = 17;
 	
 	var day = d3.time.format("%w"),     //%w weekday as a decimal number [0(Sunday),6].
 	    week = d3.time.format("%U"),	//%U week number of the year (Sunday as the first day of the week) as a decimal number [00,53].
@@ -43,7 +44,7 @@ function yearView(){
 
 	var color = d3.scale.quantize()		//quantize() ,output discrete range, the mapping is linear
 	    //.domain([-.05, .05])
-		.domain([24.0, 0.0])	//input domain
+		.domain([0.0, 24.0])	//input domain
 	    .range(d3.range(11).map(function(d) { return "q" + d + "-11"; }));  //output range
 
 	
@@ -65,7 +66,57 @@ svg.append("text")
     .style("text-anchor", "middle")
     .text(function(d) { return d; });
 
-	
+svg.append("text")
+.attr("transform", "translate(18,-5)")
+.text("Jan");
+
+svg.append("text")
+.attr("transform", "translate(102,-5)")
+.text("Feb");	
+
+svg.append("text")
+.attr("transform", "translate(176,-5)")
+.text("Mar");	
+
+
+svg.append("text")
+.attr("transform", "translate(256,-5)")
+.text("Apr");
+
+
+svg.append("text")
+.attr("transform", "translate(330,-5)")
+.text("May");
+
+
+svg.append("text")
+.attr("transform", "translate(400,-5)")
+.text("Jun");
+
+svg.append("text")
+.attr("transform", "translate(480,-5)")
+.text("Jul");
+
+svg.append("text")
+.attr("transform", "translate(560,-5)")
+.text("Aug");
+
+svg.append("text")
+.attr("transform", "translate(630,-5)")
+.text("Sep");
+
+svg.append("text")
+.attr("transform", "translate(700,-5)")
+.text("Oct");
+
+svg.append("text")
+.attr("transform", "translate(780,-5)")
+.text("Nov");
+
+svg.append("text")
+.attr("transform", "translate(850,-5)")
+.text("Dec");
+
 	
 	var rect = svg.selectAll(".day")
     .data(function(d) { return d3.time.days(new Date(d, 0, 1), new Date(d + 1, 0, 1)); })
