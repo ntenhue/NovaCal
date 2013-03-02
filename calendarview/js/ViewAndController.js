@@ -100,8 +100,10 @@ function ViewController(view, calendarModel) {
 	
 	view.getEventsButton.click(function () { 
 		var k = $('input[name=radioCalendars]:checked').val();
-		calendarModel.clearEvents(k);
-		askGoogle.loadEvents(k,null);
+		if (k!=null){
+			calendarModel.clearEvents(k);
+			askGoogle.loadEvents(k,null);
+			}
 		});
 
 
