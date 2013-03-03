@@ -171,7 +171,17 @@ this.updateTotalBusyHours = function (calendars, selected) {
 					
 					
 					ttlbzyhrs[j].hours += calendars[k].busyHours[i].hours
-					ttlbzyhrs[j].hoursByColor[k] += calendars[k].busyHours[i].hours;
+					//ttlbzyhrs[j].hoursByColor[k] += calendars[k].busyHours[i].hours;
+					
+					
+					
+					//console.log('add '+calendarModel.calendars[2].busyHours[0].hoursByColor);
+					
+					for (var l in ttlbzyhrs[j].hoursByColor){
+						ttlbzyhrs[j].hoursByColor[l] += calendars[k].busyHours[i].hoursByColor[l];
+					}
+					
+					//console.log('add '+calendarModel.calendars[2].busyHours[0].hoursByColor);
 					
 					pushNeeded = false;
 					break;
@@ -184,17 +194,17 @@ this.updateTotalBusyHours = function (calendars, selected) {
 				}
 			
 			if (pushNeeded) {
-				ttlbzyhrs.push({'date':'', 'hours':0, 'hoursByColor':[k] });
+				ttlbzyhrs.push({'date':'', 'hours':0, 'hoursByColor':[0,0,0,0,0,0,0,0,0,0,0,0] });
 				
 				ttlbzyhrs[ttlbzyhrs.length-1].date = calendars[k].busyHours[i].date;
 				ttlbzyhrs[ttlbzyhrs.length-1].hours = calendars[k].busyHours[i].hours;
-				ttlbzyhrs[ttlbzyhrs.length-1].hoursByColor[k] = calendars[k].busyHours[i].hours;
+				//ttlbzyhrs[ttlbzyhrs.length-1].hoursByColor[k] = calendars[k].busyHours[i].hours;
+				ttlbzyhrs[ttlbzyhrs.length-1].hoursByColor = calendars[k].busyHours[i].hoursByColor;
 				
 				}
 			
 		}}}
 	
-	console.log(ttlbzyhrs);
 	return ttlbzyhrs;
 	
 }

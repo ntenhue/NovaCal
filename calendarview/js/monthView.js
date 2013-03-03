@@ -1,4 +1,4 @@
-function monthView(k, selected, yearNumber, monthNumber){
+function MonthView(k, selected, yearNumber, monthNumber){
 	
 	$("#monthViewCanvas").empty();
 	
@@ -13,7 +13,9 @@ function monthView(k, selected, yearNumber, monthNumber){
 	    .rangeRound([height, 0]);
 	
 	var color = d3.scale.ordinal()
-	    .range(["#8064a2", "#4f81bd", "#b9cde5", "#00b0f0", "#99ffcc", "#00b050", "#f9d161","#feb46a","#ff7c80","#c00000","#b3a2c7","#d9d9d9"]);
+	    .range(["#8064a2","#b9cde5","#99ffcc","#b3a2c7","#ff7c80","#f9d161","#feb46a","#00b0f0","#d9d9d9", "#4f81bd",    "#00b050", "#c00000"]);
+	
+	
 	
 	var xAxis = d3.svg.axis()
 	    .scale(x)
@@ -43,18 +45,18 @@ function monthView(k, selected, yearNumber, monthNumber){
 		   
 		  data.forEach(function(d) {
 		    
-		    d.color1 = d.hoursByColor[0];
-		    d.color2 = d.hoursByColor[1];
-		    d.color3 = d.hoursByColor[2];
-		    d.color4 = d.hoursByColor[3];
-		    d.color5 = d.hoursByColor[4];
-		    d.color6 = d.hoursByColor[5];
-		    d.color7 = d.hoursByColor[6];
-		    d.color8 = d.hoursByColor[7];
-		    d.color9 = d.hoursByColor[8];
-		    d.color10 = d.hoursByColor[9];
-		    d.color11 = d.hoursByColor[10];
-		    d.color12 = d.hoursByColor[11];
+		    d.color0 = d.hoursByColor[0];
+		    d.color1 = d.hoursByColor[1];
+		    d.color2 = d.hoursByColor[2];
+		    d.color3 = d.hoursByColor[3];
+		    d.color4 = d.hoursByColor[4];
+		    d.color5 = d.hoursByColor[5];
+		    d.color6 = d.hoursByColor[6];
+		    d.color7 = d.hoursByColor[7];
+		    d.color8 = d.hoursByColor[8];
+		    d.color9 = d.hoursByColor[9];
+		    d.color10 = d.hoursByColor[10];
+		    d.color11 = d.hoursByColor[11];
 		    
 		  });
 		

@@ -143,10 +143,9 @@ function ViewController(view, calendarModel) {
 				legendView();				
 				
 				if (see==1) {
-					monthView(k, view.listItem, 2013, 03); 
+					monthView = new MonthView(k, view.listItem, 2013, 03); 
 				} else {
-					//$("#monthViewCanvas").empty();
-					monthView(null, view.listItem, 2013, 03); 
+					monthView = new MonthView(null, view.listItem, 2013, 03); 
 				}
 			}
 
