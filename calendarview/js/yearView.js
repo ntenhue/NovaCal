@@ -1,6 +1,6 @@
 function yearView() {
 
-	$("#mycanvas").empty();
+	$("#yearViewCanvas").empty();
 	var width = 960, height = 186, cellSize = 17; // cell size
 
 	var day = d3.time.format("%w"), // %w weekday as a decimal number
@@ -22,7 +22,7 @@ function yearView() {
 	// mapping the values to colors
 	var color = d3.scale.quantize() // quantize() ,output discrete range, the
 	// mapping is linear
-	.domain([ 0.0, 24.0 ]) // input domain
+	.domain([0.0, 12.0 ]) // input domain
 	.range(d3.range(11).map(function(d) {
 		return "q" + d + "-11";
 	})); // output range, discrete
@@ -31,7 +31,7 @@ function yearView() {
 	// .map - Create a new array with the result of a function of every element
 	// in the array.
 
-	var svg = d3.select("#mycanvas").selectAll("svg") // svg is whole rect
+	var svg = d3.select("#yearViewCanvas").selectAll("svg") // svg is whole rect
 	// area to contain the
 	// graph, including the
 	// blank
@@ -129,6 +129,14 @@ function yearView() {
 	// returned by the map operator, or
 	// Applies the nest operator to the specified array, returning an
 	// associative array.
+	
+	/*
+	var test = d3.nest() 
+	.key(function(d) {	return d.date;	})
+	.rollup(function(d) {return d[0].hoursByColor;	})
+	.map(calendarModel.totalBusyHours); 
+*/
+
 
 	// selector,filter:https://github.com/mbostock/d3/wiki/Selections#wiki-filter
 	rect.filter(function(d) {

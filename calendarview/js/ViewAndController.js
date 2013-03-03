@@ -9,7 +9,7 @@ function View(parent, calendarModel) {
 	this.getEventsButton.html("Load events");	
 
 	this.updateViewButton = $("<button>");
-	this.updateViewButton.html("Update");
+	this.updateViewButton.html("Show");
 	
 
 
@@ -58,9 +58,9 @@ function View(parent, calendarModel) {
 		
 		if (arg == "events") {
 		
-		calendarModel.totalBusyHours=calendarModel.updateTotalBusyHours(calendarModel.calendars,this.listItem);
-			yearView();  legendView();
-		
+		//calendarModel.totalBusyHours=calendarModel.updateTotalBusyHours(calendarModel.calendars,this.listItem);
+		//	yearView();  legendView();
+			
 		/*
 		
 		this.tableEventsList.empty();
@@ -125,13 +125,38 @@ function ViewController(view, calendarModel) {
 		});*/
 
 	view.updateViewButton.click(function () {
+		var see=0;
+		var k;
 		
-		for (var k in view.listItem) {
-			if (view.listItem[k].prop('checked'))askGoogle.checkUpdatesAndLoad(k);
+		for (var i in view.listItem) {
+			if (view.listItem[i].prop('checked')){
+				askGoogle.checkUpdatesAndLoad(i);
+				see++; k=i;
+				}
 			}
 		
-		calendarModel.totalBusyHours=calendarModel.updateTotalBusyHours(calendarModel.calendars,view.listItem);
-		yearView();  legendView();
+		setTimeout(function() {
+			
+			if (see!=0) {
+				calendarModel.totalBusyHours=calendarModel.updateTotalBusyHours(calendarModel.calendars,view.listItem);
+				yearView();  
+				legendView();				
+				
+				if (see==1) {
+					monthView(k, view.listItem, 2013, 03); 
+				} else {
+					//$("#monthViewCanvas").empty();
+					monthView(null, view.listItem, 2013, 03); 
+				}
+			}
+
+			
+
+			
+			
+		}, 1000);
+		
+		
 		
 	});
 
