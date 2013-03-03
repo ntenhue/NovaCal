@@ -23,6 +23,8 @@ function AppModel(){
 	this.getLibraryStatus = function () {	
 		return this.libraryStatus;}	
 	
+	this.colorMonth = "byCalendars";
+	
 	
 	
 	/*****************************************  

@@ -3,6 +3,17 @@ body {
   font-family: Helvetica, Arial, Verdana;
   shape-rendering: crispEdges;
 }
+
+.monthLabel {
+fill:black;
+}
+.monthLabelMouse {
+fill:#559393;
+}
+.lable {
+fill:#aaaaaa;
+}
+
 .day {
   fill: #fff;
   stroke: #ccc;

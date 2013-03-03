@@ -1,6 +1,5 @@
-function yearView() {
+function yearView(k, selected) {
 	$("#yearViewCanvas").empty();
-
 	var width = 960, height = 186, cellSize = 17; // cell size
 	var day = d3.time.format("%w"), // %w weekday as a decimal number
 	// [0(Sunday),6].
@@ -21,17 +20,16 @@ function yearView() {
 	// .map - Create a new array with the result of a function of every element
 	// in the array.
 	var svg = d3.select("#yearViewCanvas").selectAll("svg")
-
-	.data([ 2012, 2013 ]).enter().append("svg").attr("width", width)
-	// each node is a svg with the preset width& height
-	.attr("height", height).attr("class", "RdYlGn") // and class RdYlGn
-	.append("g").attr(
-			"transform",
-			"translate(" + ((width - cellSize * 53) / 2) + ","
-					+ (height - cellSize * 7 - 1) + ")").attr("id",
-			function(d) {
-				return "year" + d;
-			});
+			.data([ 2012, 2013 ]).enter().append("svg").attr("width", width)
+			// each node is a svg with the preset width& height
+			.attr("height", height).attr("class", "RdYlGn") // and class RdYlGn
+			.append("g").attr(
+					"transform",
+					"translate(" + ((width - cellSize * 53) / 2) + ","
+							+ (height - cellSize * 7 - 1) + ")").attr("id",
+					function(d) {
+						return "year" + d;
+					});
 	// (29.5,16)
 	svg.append("text").attr("transform",
 			"translate(-20," + cellSize * 3.5 + ")rotate(-90)").style(
@@ -63,7 +61,6 @@ function yearView() {
 				} else if (day(d) > 0) {
 					return week(d) * cellSize;
 				}
-
 			}) // position of each grid, week = d3.time.format("%U")
 			.attr("y", function(d) {
 				if (day(d) == 0) {
@@ -73,7 +70,6 @@ function yearView() {
 				}
 			}) // day = d3.time.format("%w"), get the weekday number from the
 			.datum(format);
-
 	var dateLabel = svg.selectAll(".label").data(function(d) {
 		return d3.time.days(new Date(d, 0, 1), new Date(d + 1, 0, 1));
 	})
@@ -83,7 +79,7 @@ function yearView() {
 	// it gets every day from the year d to year d+1
 	.enter().append("text") // currently, the class .day is empty, here they
 	// create nodes from every datum in the data
-	.attr("class", "label")
+	.attr("class", "label").style("fill", "#888888")
 	// .attr("width", cellSize)
 	// .attr("height", cellSize)
 	.attr("x", function(d) {
@@ -92,7 +88,6 @@ function yearView() {
 		} else if (day(d) > 0) {
 			return week(d) * cellSize;
 		}
-
 	}) // position of each grid, week = d3.time.format("%U")
 	.attr("y", function(d) {
 		if (day(d) == 0) {
@@ -111,28 +106,40 @@ function yearView() {
 	})
 	// every first day of each month from year d to year d+1
 	.enter().append("path").attr("class", "month").attr("d", monthPath);
-
 	var monthLabel = svg.selectAll(".monthLabel").data(function(d) {
 		return d3.time.months(new Date(d, 0, 1), new Date(d + 1, 0, 1));
 	}).enter().append("text").attr("class", "monthLabel").style("text-anchor",
-			"middle").attr("x", monthLabelPositionX).attr("y", -15).text(
-			function(d) {
-				return d3.time.format("%B")(d)
-			});
-
-	$(".monthLabel").click(function() {
-		monthView();
+			"middle").attr("x", monthLabelPositionX).attr("y", -15).attr(
+			"yearNumber", function(d) {
+				return d3.time.format("%Y")(d);
+			}).attr("monthNumber", function(d) {
+		return d3.time.format("%m")(d);
+	}).text(function(d) {
+		return d3.time.format("%B")(d)
 	});
+	$(".monthLabel").mouseover(function() {
+		$(this).css("cursor", "pointer");
+		$(this).addClass("monthLabelMouse");
+	});
+	$(".monthLabel").mouseleave(function() {
+		$(this).addClass("monthLabel");
+	});
+	$(".monthLabel").click(
+			function() {
+				$(".monthLabel").css("fill", "#000000");
+				monthView = new MonthView(k, selected,
+						+this.attributes.yearNumber.value,
+						+this.attributes.monthNumber.value);
+				$(this).css("fill", "#559393");
+			});
 
 	function monthLabelPositionX(t0) {
 		var t1 = new Date(t0.getFullYear(), t0.getMonth() + 1, 0), d0 = +day(t0), w0 = +week(t0), d1 = +day(t1), w1 = +week(t1);
-
 		if (d0 == 0) {
 			return (w0 + w1 + 1) / 2 * cellSize;
 		} else if (d0 > 0) {
 			return (w0 + 1 + w1 + 1) / 2 * cellSize;
 		}
-
 	}
 	/*------------------------*/
 	/* importing the data */
@@ -152,7 +159,7 @@ function yearView() {
 	}) // The leaf level is replaced by a value at the parent level
 	// formerly, the value of each key is an array of an object
 	.map(calendarModel.totalBusyHours); // The return value of the rollup
-										// function will replace the
+	// function will replace the
 	// array of leaf values in either the associative array
 	// returned by the map operator, or
 	// Applies the nest operator to the specified array, returning an
@@ -171,7 +178,6 @@ function yearView() {
 		return d + " you are busy: " + data[d] + " hours";
 	}); // set the busy hours to title
 	// });//csv
-
 	function monthPath(t0) { // t0 is the first day of a month, t1 is the
 		// last day of the month
 		var t1 = new Date(t0.getFullYear(), t0.getMonth() + 1, 0), // new

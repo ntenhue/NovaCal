@@ -171,17 +171,19 @@ this.updateTotalBusyHours = function (calendars, selected) {
 					
 					
 					ttlbzyhrs[j].hours += calendars[k].busyHours[i].hours
-					//ttlbzyhrs[j].hoursByColor[k] += calendars[k].busyHours[i].hours;
 					
+					if (appModel.colorMonth=="byCalendars"){
 					
-					
-					//console.log('add '+calendarModel.calendars[2].busyHours[0].hoursByColor);
-					
-					for (var l in ttlbzyhrs[j].hoursByColor){
-						ttlbzyhrs[j].hoursByColor[l] += calendars[k].busyHours[i].hoursByColor[l];
+						ttlbzyhrs[j].hoursByColor[k] += calendars[k].busyHours[i].hours;
 					}
 					
-					//console.log('add '+calendarModel.calendars[2].busyHours[0].hoursByColor);
+					if (appModel.colorMonth=="byEvents"){
+						
+					
+						for (var l in ttlbzyhrs[j].hoursByColor){
+							ttlbzyhrs[j].hoursByColor[l] += calendars[k].busyHours[i].hoursByColor[l];
+						}
+					}
 					
 					pushNeeded = false;
 					break;
@@ -198,8 +200,18 @@ this.updateTotalBusyHours = function (calendars, selected) {
 				
 				ttlbzyhrs[ttlbzyhrs.length-1].date = calendars[k].busyHours[i].date;
 				ttlbzyhrs[ttlbzyhrs.length-1].hours = calendars[k].busyHours[i].hours;
-				//ttlbzyhrs[ttlbzyhrs.length-1].hoursByColor[k] = calendars[k].busyHours[i].hours;
-				ttlbzyhrs[ttlbzyhrs.length-1].hoursByColor = calendars[k].busyHours[i].hoursByColor;
+				
+				if (appModel.colorMonth=="byCalendars"){
+					
+					ttlbzyhrs[ttlbzyhrs.length-1].hoursByColor[k] = calendars[k].busyHours[i].hours;
+				}
+				
+				if (appModel.colorMonth=="byEvents"){
+					
+					for (var l in ttlbzyhrs[ttlbzyhrs.length-1].hoursByColor){
+					ttlbzyhrs[ttlbzyhrs.length-1].hoursByColor[l] = calendars[k].busyHours[i].hoursByColor[l];
+					}
+				}
 				
 				}
 			
