@@ -79,7 +79,7 @@ function yearView(k, selected) {
 	// it gets every day from the year d to year d+1
 	.enter().append("text") // currently, the class .day is empty, here they
 	// create nodes from every datum in the data
-	.attr("class", "label").style("fill", "#888888")
+	.attr("class", "label") // .style("fill", "#888888")
 	// .attr("width", cellSize)
 	// .attr("height", cellSize)
 	.attr("x", function(d) {
@@ -127,6 +127,11 @@ function yearView(k, selected) {
 	$(".monthLabel").click(
 			function() {
 				$(".monthLabel").css("fill", "#000000");
+				
+				$("#settings").show();
+				appModel.selectedYear=+this.attributes.yearNumber.value;
+				appModel.selectedMonth=+this.attributes.monthNumber.value;
+				
 				monthView = new MonthView(k, selected,
 						+this.attributes.yearNumber.value,
 						+this.attributes.monthNumber.value);

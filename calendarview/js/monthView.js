@@ -45,7 +45,7 @@ function MonthView(k, selected, yearNumber, monthNumber){
 		   
 		  data.forEach(function(d) {
 		    
-		    d.color0 = d.hoursByColor[0];
+		    d.dgdsdgds = d.hoursByColor[0];
 		    d.color1 = d.hoursByColor[1];
 		    d.color2 = d.hoursByColor[2];
 		    d.color3 = d.hoursByColor[3];
@@ -97,7 +97,8 @@ function MonthView(k, selected, yearNumber, monthNumber){
 		  
 		  y.domain([0, d3.max(data, function(d) { return d.total; })]);
 		  
-		  var eventfulDays = data.map(function(d) { if( months(dateFormat.parse(d.date)) == monthNumber )
+		  var eventfulDays = data.map(function(d) { if( months(dateFormat.parse(d.date)) == monthNumber 
+                  									&& d3.time.format("%Y")(dateFormat.parse(d.date)) == yearNumber)
 		  									{
 		  										return d; 
 		  									}

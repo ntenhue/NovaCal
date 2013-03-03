@@ -32,7 +32,8 @@ function View(parent, calendarModel) {
 	parent.append(/* this.listCalendarsButton, */this.listCalendarsForm,
 	/* this.getEventsButton, */this.updateViewButton);
 
-	$("#settings").append( this.colorCalsButton, this.colorEventsButton, "Color month by ", this.colorMonthSpan);
+	$("#settings").append( this.colorCalsButton, this.colorEventsButton, "Color bars: ", this.colorMonthSpan);
+	$("#settings").hide();
 	
 	/***************************************************************************
 	 * Observer implementation
@@ -121,10 +122,39 @@ function ViewController(view, calendarModel) {
 	
 	view.colorCalsButton.click(function() {	
 		appModel.colorMonth="byCalendars";
-		view.colorMonthSpan.html(appModel.colorMonth);	});
+		view.colorMonthSpan.html(appModel.colorMonth);	
+		var see = 0;
+		var k;
+		for ( var i in view.listItem) {	if (view.listItem[i].prop('checked')) {	see++;k = i;	}	}
+
+		if (see != 0) {	
+				if (see == 1) {
+					monthView = new MonthView (k, view.listItem,appModel.selectedYear,appModel.selectedMonth);
+				} else {
+					monthView = new MonthView (null, view.listItem,appModel.selectedYear,appModel.selectedMonth);
+				}
+
+			}
+		
+	});
 	
 	view.colorEventsButton.click(function() {appModel.colorMonth="byEvents";
-		view.colorMonthSpan.html(appModel.colorMonth);	});
+		view.colorMonthSpan.html(appModel.colorMonth);
+		var see = 0;
+		var k;
+		
+		for ( var i in view.listItem) {	if (view.listItem[i].prop('checked')) {	see++;k = i;	}	}
+
+		if (see != 0) {	
+				if (see == 1) {
+					monthView = new MonthView (k, view.listItem,appModel.selectedYear,appModel.selectedMonth);
+				} else {
+					monthView = new MonthView (null, view.listItem,appModel.selectedYear,appModel.selectedMonth);
+				}
+
+			}
+		
+		});
 
 	view.updateViewButton.click(function() {
 		var see = 0;
@@ -140,8 +170,16 @@ function ViewController(view, calendarModel) {
 
 				if (see == 1) {
 					yearView(k, view.listItem);	legendView();
+					
+					if (appModel.selectedMonth!=null) {
+					monthView = new MonthView (k, view.listItem,appModel.selectedYear,appModel.selectedMonth);
+					}
 				} else {
 					yearView(null, view.listItem);	legendView();
+					if (appModel.selectedMonth!=null) {
+						monthView = new MonthView (null, view.listItem,appModel.selectedYear,appModel.selectedMonth);
+						}
+					
 				}
 
 			}, 1000);}

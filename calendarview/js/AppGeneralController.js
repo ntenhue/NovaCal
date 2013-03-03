@@ -17,11 +17,14 @@ function AppGeneralController(appModel) {
             calendarModel = new CalendarModel();
             askGoogle = new AskGoogle(calendarModel);
             view = new View($("#workspace"), calendarModel);
+            
+            
             viewController = new ViewController(view, calendarModel);
             
             view.listCalendarsButton.click();
             
             yearView(null, view.listItem); legendView();
+            
             
             
             }
