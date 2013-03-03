@@ -4,14 +4,13 @@ function yearView() {
 	var width = 960, height = 186, cellSize = 17; // cell size
 
 	var day = d3.time.format("%w"), // %w weekday as a decimal number
-									// [0(Sunday),6].
+	// [0(Sunday),6].
 	week = d3.time.format("%U"), // %U week number of the year (Sunday as the
-									// first day of the week) as a decimal
-									// number [00,53].
+	// first day of the week) as a decimal
+	// number [00,53].
 	/*
 	 * day1 = function(d){ if(d3.time.format("%w")(d) == 0 ){ return "6"; } else
-	 * if( d3.time.format("%w")(d) > 0 ){ return "d3.time.format("%w")(d)-1"; }
-	 *  },
+	 * if( d3.time.format("%w")(d) > 0 ){ return "d3.time.format("%w")(d)-1"; } },
 	 * 
 	 * week1 = function(d){ if( d3.time.format("%w")(d) == 0){ return
 	 * "d3.time.format("%U")(d)-1"; } else if ( d3.time.format("%w")(d) >0 ){
@@ -22,7 +21,7 @@ function yearView() {
 
 	// mapping the values to colors
 	var color = d3.scale.quantize() // quantize() ,output discrete range, the
-									// mapping is linear
+	// mapping is linear
 	.domain([ 0.0, 24.0 ]) // input domain
 	.range(d3.range(11).map(function(d) {
 		return "q" + d + "-11";
@@ -33,18 +32,18 @@ function yearView() {
 	// in the array.
 
 	var svg = d3.select("#mycanvas").selectAll("svg") // svg is whole rect
-														// area to contain the
-														// graph, including the
-														// blank
+	// area to contain the
+	// graph, including the
+	// blank
 	// .data(d3.range(1990, 2011))
 	// .data(d3.range(2011, 2014))
 	.data([ 2012, 2013 ]).enter().append("svg") // the existing selection is
-												// empty, and we wish to create
-												// new nodes to match our data:
+	// empty, and we wish to create
+	// new nodes to match our data:
 	.attr("width", width) // each node is a svg with the preset width& height
 	.attr("height", height).attr("class", "RdYlGn") // and class RdYlGn
 	.append("g") // g,Used to group together elements, so this is the actual
-					// grids we see
+	// grids we see
 	.attr(
 			"transform",
 			"translate(" + ((width - cellSize * 53) / 2) + ","
@@ -69,7 +68,7 @@ function yearView() {
 	// Date(year, month, day)
 	// it gets every day from the year d to year d+1
 	.enter().append("rect") // currently, the class .day is empty, here they
-							// create nodes from every datum in the data
+	// create nodes from every datum in the data
 	.attr("class", "day").attr("width", cellSize).attr("height", cellSize)
 			.attr("x", function(d) {
 				if (day(d) == 0) {
@@ -86,9 +85,9 @@ function yearView() {
 					return (day(d) - 1) * cellSize;
 				}
 			}) // day = d3.time.format("%w"), get the weekday number from the
-				// datum
+			// datum
 			.datum(format); // get the value from format, format =
-							// d3.time.format("%Y-%m-%d")
+	// d3.time.format("%Y-%m-%d")
 	rect.append("title")
 	// .text(function(d) { return d; });
 
@@ -98,17 +97,7 @@ function yearView() {
 	// d3.time.months(start, stop[, step]).
 	// every first day of each month from year d to year d+1
 	.enter().append("path").attr("class", "month").attr("d", monthPath); // set
-																			// the
-																			// border
-																			// of a
-																			// month
-																			// on
-																			// the
-																			// graph,
-																			// using
-																			// the
-																			// function
-																			// monthPath
+	// the  border of a month on the graph, using the function monthPath
 
 	monthBlock.append("text").attr("class", "monthLable").text("0");
 
@@ -116,51 +105,56 @@ function yearView() {
 	/* importing the data */
 	/*----------------------*/
 	// d3-array:https://github.com/mbostock/d3/wiki/Arrays
-	d3.csv("dataset/sample_data_v0.1.csv", function(csv) {
-		// console.log(csv);
-		csv = calendarModel.totalBusyHours;
-		// console.log(csv);
+	// d3.csv("dataset/sample_data_v0.1.csv", function(csv) {
+	// console.log(csv);
+	// csv = calendarModel.totalBusyHours;
+	// console.log(csv);
+	var data = d3.nest() // Nesting reform the input array into an
+	// hierarchical structure
+	.key(function(d) {
+		return d.date;
+	}) // the key(function) controls the level rule in the tree
+	.rollup(function(d) {
+		return d[0].hours;
+	})
+	// .rollup(function(d) {
+	// return d[1].hoursByColor;
+	// })
 
-		var data = d3.nest() // Nesting reform the input array into an
-								// hierarchical structure
-		.key(function(d) {
-			return d.date;
-		}) // the key(function) controls the level rule in the tree
-		.rollup(function(d) {
-			return d[0].hours;
-		}) // The leaf level is replaced by a value at the parent level
-		// formerly, the value of each key is an array of an object
-		.map(csv); // The return value of the rollup function will replace the
-					// array of leaf values in either the associative array
-					// returned by the map operator, or
-		// Applies the nest operator to the specified array, returning an
-		// associative array.
+	// The leaf level is replaced by a value at the parent level
+	// formerly, the value of each key is an array of an object
+	.map(calendarModel.totalBusyHours); // The return value of the rollup
+	// function will replace the
+	// array of leaf values in either the associative array
+	// returned by the map operator, or
+	// Applies the nest operator to the specified array, returning an
+	// associative array.
 
-		// selector,filter:https://github.com/mbostock/d3/wiki/Selections#wiki-filter
-		rect.filter(function(d) {
-			return d in data;
-		}) // Filters the selection, returning a new selection that contains
-			// only the elements for which the specified selector is true.
-		// rect - svg('.day')
-		.attr("class", function(d) {
-			return "day " + color(data[d]);
-		}) // set the class of the grid to a particular color class according
-			// to the value
-		.select("title").text(function(d) {
-			return d + " you are busy: " + data[d] + " hours";
-		}); // set the busy hours to title
+	// selector,filter:https://github.com/mbostock/d3/wiki/Selections#wiki-filter
+	rect.filter(function(d) {
+		return d in data;
+	}) // Filters the selection, returning a new selection that contains
+	// only the elements for which the specified selector is true.
+	// rect - svg('.day')
+	.attr("class", function(d) {
+		return "day " + color(data[d]);
+	}) // set the class of the grid to a particular color class according
+	// to the value
+	.select("title").text(function(d) {
+		return d + " you are busy: " + data[d] + " hours";
+	}); // set the busy hours to title
 
-	});
+	// });
 	function monthPath(t0) { // t0 is the first day of a month, t1 is the
-								// last day of the month
+		// last day of the month
 		var t1 = new Date(t0.getFullYear(), t0.getMonth() + 1, 0), // new
-																	// Date(1990,0,0)
-																	// = the
-																	// previous
-																	// day of
-																	// 1990-1-1
+		// Date(1990,0,0)
+		// = the
+		// previous
+		// day of
+		// 1990-1-1
 		d0 = +day(t0), w0 = +week(t0), // the result of day(t0) is type of
-										// string, = + make it into a number
+		// string, = + make it into a number
 		d1 = +day(t1), w1 = +week(t1); // week number also start with 0;
 		if (d0 == 0) {
 			return "M" + w0 * cellSize + "," + 6 * cellSize + "H" + (w0 - 1)

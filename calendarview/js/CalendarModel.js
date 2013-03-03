@@ -154,9 +154,15 @@ this.updateEventColor = function (events) {
 this.updateTotalBusyHours = function (calendars, selected) {
 	
 	var ttlbzyhrs = [];
+	
+	
+	ttlbzyhrs.push({'date':'date', 'hours':'hours', 'hoursByColor':[] });
+	
 	var pushNeeded=true;
 	
 	for (var k in calendars){ if (selected[k].prop('checked')){
+		
+		ttlbzyhrs[0].hoursByColor[k]=calendars[k].summary;
 		
 		for (var i in calendars[k].busyHours){
 			
@@ -178,7 +184,7 @@ this.updateTotalBusyHours = function (calendars, selected) {
 				}
 			
 			if (pushNeeded) {
-				ttlbzyhrs.push({'date':' ', 'hours':0, 'hoursByColor':[0,0,0,0,0,0,0,0,0,0,0,0] });
+				ttlbzyhrs.push({'date':'', 'hours':0, 'hoursByColor':[k] });
 				
 				ttlbzyhrs[ttlbzyhrs.length-1].date = calendars[k].busyHours[i].date;
 				ttlbzyhrs[ttlbzyhrs.length-1].hours = calendars[k].busyHours[i].hours;
@@ -200,6 +206,19 @@ this.updateTotalBusyHours = function (calendars, selected) {
 this.updateBusyHours = function (events) {
 	
 	var busyHours = [];
+	busyHours.push({'date':'date', 'hours':'hours', 'hoursByColor':['default',
+									                'light-blue',
+									                'light-green',
+									                'violet',
+									                'light-red',
+									                'gold',
+									                'orange',
+									                'turquoise',
+									                'grey',
+									                'blue',
+									                'green',
+									                'red'] });
+	
 	var pushNeeded=true;
 	
 	for (var i in events){	if (events[i].duration<24){

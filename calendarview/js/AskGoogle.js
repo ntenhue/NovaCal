@@ -61,7 +61,7 @@ function AskGoogle(calendarModel) {
 				// the function calls itself with a nextPageToken
 				// recursion is stopped on the last page, 
 				// since nextPageToken of it is NULL
-				askGoogle.calendarsEventsList(calendarId,resp.nextPageToken);
+				askGoogle.loadEvents(k,resp.nextPageToken);
 				}
 			});
 		
