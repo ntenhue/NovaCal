@@ -156,13 +156,13 @@ this.updateTotalBusyHours = function (calendars, selected) {
 	var ttlbzyhrs = [];
 	
 	
-	ttlbzyhrs.push({'date':'date', 'hours':'hours', 'hoursByColor':[] });
+//	ttlbzyhrs.push({'date':'date', 'hours':'hours', 'hoursByColor':[] });
 	
 	var pushNeeded=true;
 	
 	for (var k in calendars){ if (selected[k].prop('checked')){
 		
-		ttlbzyhrs[0].hoursByColor[k]=calendars[k].summary;
+//		ttlbzyhrs[0].hoursByColor[k]=calendars[k].summary;
 		
 		for (var i in calendars[k].busyHours){
 			
@@ -194,7 +194,7 @@ this.updateTotalBusyHours = function (calendars, selected) {
 			
 		}}}
 	
-	
+	console.log(ttlbzyhrs);
 	return ttlbzyhrs;
 	
 }
@@ -206,7 +206,7 @@ this.updateTotalBusyHours = function (calendars, selected) {
 this.updateBusyHours = function (events) {
 	
 	var busyHours = [];
-	busyHours.push({'date':'date', 'hours':'hours', 'hoursByColor':['default',
+/*	busyHours.push({'date':'date', 'hours':'hours', 'hoursByColor':['default',
 									                'light-blue',
 									                'light-green',
 									                'violet',
@@ -218,7 +218,7 @@ this.updateBusyHours = function (events) {
 									                'blue',
 									                'green',
 									                'red'] });
-	
+	*/
 	var pushNeeded=true;
 	
 	for (var i in events){	if (events[i].duration<24){

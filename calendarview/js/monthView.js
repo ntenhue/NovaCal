@@ -1,6 +1,6 @@
-function monthView(){
+function monthView(k, selected, yearNumber, monthNumber){
 	
-	$("#mycanvas").empty();
+	$("#monthViewCanvas").empty();
 	
 	var margin = {top: 20, right: 60, bottom: 30, left: 40},
 	    width = 560 - margin.left - margin.right,
@@ -24,16 +24,23 @@ function monthView(){
 	    .orient("left")
 	    .tickFormat(d3.format(".2s"));
 	
-	var svg = d3.select("#mycanvas").append("svg")
+	var svg = d3.select("#monthViewCanvas").append("svg")
 	    .attr("width", width + margin.left + margin.right)
 	    .attr("height", height + margin.top + margin.bottom)
 	  .append("g")
 	    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-	
-	d3.csv("realData.csv", function(error, data) {
 		
-		  data = calendarModel.occupancy;
-		  
+
+	//var data = busyHours; //FFFFFFFFFFFFUUUUUUUUUUUUUUUUUUUUUUU!!!
+	
+
+		if (k!=null) {	
+			var data = calendarModel.updateBusyHours(calendarModel.calendars[k].events);		
+		} else {
+			var data = calendarModel.updateTotalBusyHours(calendarModel.calendars,selected);
+		}
+
+		   
 		  data.forEach(function(d) {
 		    
 		    d.color1 = d.hoursByColor[0];
@@ -52,7 +59,7 @@ function monthView(){
 		  });
 		
 		  color.domain( d3.keys(data[0]).filter( function(key) { 
-									  					if(key !== "date" && key !== "hoursBusy" && key !== "hoursByColor"){
+									  					if(key !== "date" && key !== "hours" && key !== "hoursByColor"){
 									  						return key;
 									  					} 
 		  										}));
@@ -67,8 +74,8 @@ function monthView(){
 		
 		  //data.sort(function(a, b) { return b.total - a.total; });
 			
-			var yearNumber = 2013;
-			var monthNumber = 3;
+			//var yearNumber = 2013;
+			//var monthNumber = 3;
 			var dateFormat = d3.time.format("%Y-%m-%d");
 			var months = d3.time.format("%m");
 			var dateNumber = d3.time.format("%d");
@@ -149,6 +156,6 @@ function monthView(){
 		      .text(function(d) { return d; });
 		  
 		  d3.select(self.frameElement).style("height", "2910px");
-	});
+
 	
 }
