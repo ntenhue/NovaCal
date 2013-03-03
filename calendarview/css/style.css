@@ -1,68 +1,79 @@
 body {
-  font: 10px sans-serif;
-  font-family:'Helvetica', Arial, Verdana;
+  font: 10px Tahoma;
+  font-family: Helvetica, Arial, Verdana;
   shape-rendering: crispEdges;
-
 }
-
 .day {
   fill: #fff;
   stroke: #ccc;
 }
-
 .month {
   fill: none;
   stroke: #000;
   stroke-width: 2px;
 }
-
-
-
 .legend {
-                    padding: 0px;
-                    font: 10px sans-serif;
-                    background: white;
-                    /*box-shadow: 2px 2px 1px #888;*/
-                    /*float: right;*/
+	padding: 0px;
+	font: 10px Tahoma;
             }
-
 .title {
-         font: 20px sans-serif;
-            }
-            
-            
+	font: 20px sans-serif;
+            }            
 .canvas{
-     /*float: left;*/
-      display:block;
-       }
-       
-#wrap
+	padding: 1em;
+}     
+#container
 {
-	width:auto;
-	margin:30px;
-padding:0px 0px 0px 0px;
+	width: 90%;
+	margin: 10px auto;
+	background-color: #fff;
+	color: #333;
+	border: 1px solid gray;
+	line-height: 130%;
 }
-#logo
+#top{
+	padding: .5em;
+	background-color: #ddd;
+	border-bottom: 1px solid gray;
+}
+#top h1{
+	font: 30px Tahoma;
+	font-family: Helvetica, Arial, Verdana;
+	color: #333333;
+}
+#leftnav
 {
 	width:210px;
 	height:500px;
 	float:left;
-	table-layout:fixed;
+	margin: 0;
+	padding: 1em;
 }
-#yearVis
-{
-absolute:right;
+#leftnav h3{
+	font: 11px Tahoma;
+	font-family: Helvetica, Arial, Verdana;
+	color: #333333;
 }
-#legendary
+#rightnav
 {
+	float: right;
+	width: 160px;
+	margin: 0;
+	padding: 1em;
+}
+#footer
+{
+clear: both;
+margin: 0;
+padding: .5em;
+color: #333;
+background-color: #ddd;
+border-top: 1px solid gray;
+}
 
-}
-#maincont #testdiv2
-{
-	width:200px;
-	margin:1px;
-padding:0px 0px 0px 0px;
-}
+#leftnav p, .legend p { margin: 0 0 1em 0; }
+.canvas h2 { margin: 0 0 .5em 0; }
+
 
 .RdYlGn .q0-11{fill:rgb(255,255,255)}
 .RdYlGn .q1-11{fill:rgb(255,255,204)}

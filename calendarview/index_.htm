@@ -30,38 +30,32 @@
 
 <body>
 	
-	<div id="wrap">
+	<div id="container">
 		<div id="top">
-				    <a href="https://www.google.com/accounts/Logout"><h4 align="right">Sign out</h4></a>
-		</div>
-		
-		<div id="logo">
-
-
+			<h1 align="left">C3 - See the Full Picture</h1>
+			<h4 align="right"><a href="https://www.google.com/accounts/Logout">Sign out</a></h4>
+		</div>		
+		<div id="leftnav">
+			
+			<h3>C3 adds a yearly view to your Google Calendar. 
+				Colors range from light to dark, the former respresents 
+				more free time and latter represents busier days.
+				To see details, hover your mouse over a day. It’s that 
+				easy to see the full picture.
+			</h3>
+			<br>
 			<button id='authorize-button'>Sign in with google</button>
 		    <div id="workspace"> </div> 
-		   
-			<br><br>
-			<div>C3 adds a Yearly Overview to your Google Calendar. <br>
-			 Ranging from light to dark colors, it shows if <br>
-			 you have a lot of free time to no free time at all.<br>
-			Hover over a day to see details. <br>
-			Inspired by <a href="http://bl.ocks.org/mbostock/">Mike Bostocks</a><a> visualization<a href="http://bl.ocks.org/mbostock/4063318"> Calendar View</a><br> 
-			 -See the Full Picture - with C3
-			</div>
-			</div>
-		<div id="yearVis" style="position: absolute; left: 260px">
-			<table width="1000px">
-			<td>
-			<div id="mycanvas" class="canvas" > </div>
-			</td>
-			<td align="middle">
+		</div>	
+		<div id="rightnav" style="align: middle">
 			<img src="img/logo.gif"/><br>
-			<div id="mylegend" class="legend"> </div> 	
-			</td>
-			</table>
-		</div>
-</div>
+			<div id="mylegend" class="legend"> </div> 
+		</div>	
+		<div id="mycanvas" class="canvas"> </div>
+		<div id="footer">
+		Inspired by <a href="http://bl.ocks.org/mbostock/">Mike Bostock's</a> visualization <a href="http://bl.ocks.org/mbostock/4063318">Calendar View</a><br>
+	</div>
+	</div>
 </body>
 </html>
 
