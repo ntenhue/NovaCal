@@ -4,44 +4,53 @@
 	*****************************************/
 
 function CalendarModel(){
-	this.calendars= new Array();
-//	this.events= new Array();
-	this.occupancy =new Array();  // [{"date":"2012-02-16","hoursBusy":5},{"date":"2012-02-17","hoursBusy":8},{"date":"2012-02-18","hoursBusy":2}];
-	
+	this.calendars= [];
+	this.totalBusyHours = []; 
 
-
-	
-	
 
 	
 this.addCalendars = function (items) {	
-	for (var i in items){items.events = [];}
+	for (var i in items){
+		items.events = [];
+		items.updated = [];
+		items.busyHours = [];
+		}
 	this.calendars = this.calendars.concat(items);
 	this.notifyObservers("calendars");	
 	}
 
-this.addEvents = function (k, items) {	
+this.addEvents = function (k, items, upd, nextPageToken) {	
+	this.calendars[k].updated= upd;
 	this.calendars[k].events = this.calendars[k].events.concat(items);
 	this.calendars[k].events = this.updateEventsDuration(this.calendars[k].events);
 	this.calendars[k].events = this.updateEventColor(this.calendars[k].events);
-	this.occupancy 	= this.updateOccupancy(this.calendars[k].events);
-	this.notifyObservers("events");	
+	
+	if (nextPageToken==null){
+		// if this is a last or the only page of events
+		this.calendars[k].busyHours = this.updateBusyHours(this.calendars[k].events);
+		//this.totalBusyHours = this.updateTotalBusyHours(this.calendars);
+		this.notifyObservers("events");
+		}
 	}	
 
 this.clearCalendars = function () {	
 	this.calendars=[];
+	this.totalBusyHours = []; 
 	this.notifyObservers("calendars");	
 	}	
+
 this.clearEvents = function (k) {	
 	this.calendars[k].events=[];
-	this.occupancy=[];
+	this.calendars[k].updated = [];
+	this.calendars[k].busyHours = [];
+	//this.totalBusyHours = this.updateTotalBusyHours(this.calendars);
 	this.notifyObservers("events");	
 	}	
 
 this.getCalendars = function () { return this.calendars;	        }
 this.getEvents = function (k) 	{ return this.calendars[k].events;	}	
-this.getOccupancy = function () { return this.occupancy;	        }
-
+this.getTotalBusyHours = function () { return this.totalBusyHours;	        }
+this.getBusyHours = function (k) { return this.calendars[k].busyHours;	        }
 
 
 this.findCalendarBySummary = function (summary){
@@ -140,42 +149,91 @@ this.updateEventColor = function (events) {
 
 
 
-this.updateOccupancy = function (events) {
+
+
+this.updateTotalBusyHours = function (calendars, selected) {
 	
-	var occupancy = [];
+	var ttlbzyhrs = [];
+	var pushNeeded=true;
+	
+	for (var k in calendars){ if (selected[k].prop('checked')){
+		
+		for (var i in calendars[k].busyHours){
+			
+			for (var j in ttlbzyhrs){
+				if (calendars[k].busyHours[i].date == ttlbzyhrs[j].date) {
+					
+					
+					ttlbzyhrs[j].hours += calendars[k].busyHours[i].hours
+					ttlbzyhrs[j].hoursByColor[k] += calendars[k].busyHours[i].hours;
+					
+					pushNeeded = false;
+					break;
+					
+					} else {
+	
+					if (j==ttlbzyhrs.length-1)pushNeeded = true;
+	
+					}
+				}
+			
+			if (pushNeeded) {
+				ttlbzyhrs.push({'date':' ', 'hours':0, 'hoursByColor':[0,0,0,0,0,0,0,0,0,0,0,0] });
+				
+				ttlbzyhrs[ttlbzyhrs.length-1].date = calendars[k].busyHours[i].date;
+				ttlbzyhrs[ttlbzyhrs.length-1].hours = calendars[k].busyHours[i].hours;
+				ttlbzyhrs[ttlbzyhrs.length-1].hoursByColor[k] = calendars[k].busyHours[i].hours;
+				
+				}
+			
+		}}}
+	
+	
+	return ttlbzyhrs;
+	
+}
+
+
+
+
+
+this.updateBusyHours = function (events) {
+	
+	var busyHours = [];
 	var pushNeeded=true;
 	
 	for (var i in events){	if (events[i].duration<24){
 		
-		for (var j in occupancy){
-			if (events[i].start.date == occupancy[j].date) {
+		for (var j in busyHours){
+			if (events[i].start.date == busyHours[j].date) {
 				
-				occupancy[j].hoursBusy += events[i].duration;
-				occupancy[j].hoursByColor[events[i].colorId] += events[i].duration;
+				
+				busyHours[j].hours += events[i].duration;
+				busyHours[j].hoursByColor[events[i].colorId] += events[i].duration;
 				
 				pushNeeded = false;
 				break;
 				
 				} else {
 
-				if (j==occupancy.length-1)	pushNeeded = true;
+				if (j==busyHours.length-1)	pushNeeded = true;
 
 				}
 			}
 		
 		if (pushNeeded) {
-			occupancy.push({'date':' ', 'hoursBusy':0, 'hoursByColor':[0,0,0,0,0,0,0,0,0,0,0,0] });
+			busyHours.push({'date':' ', 'hours':0, 'hoursByColor':[0,0,0,0,0,0,0,0,0,0,0,0] });
 			
-			occupancy[occupancy.length-1].date = events[i].start.date;
-			occupancy[occupancy.length-1].hoursBusy = events[i].duration;
-			occupancy[occupancy.length-1].hoursByColor[events[i].colorId] = events[i].duration;
+			busyHours[busyHours.length-1].date = events[i].start.date;
+			busyHours[busyHours.length-1].hours = events[i].duration;
+			busyHours[busyHours.length-1].hoursByColor[events[i].colorId] = events[i].duration;
 			
 			}
 		
 	}}
 	
 	
-	return occupancy;
+	return busyHours;
 	
 }
 	

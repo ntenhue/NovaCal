@@ -23,7 +23,7 @@ function yearView() {
 	// mapping the values to colors
 	var color = d3.scale.quantize() // quantize() ,output discrete range, the
 									// mapping is linear
-	.domain([ 11.0, 0.0 ]) // input domain
+	.domain([ 0.0, 24.0 ]) // input domain
 	.range(d3.range(11).map(function(d) {
 		return "q" + d + "-11";
 	})); // output range, discrete
@@ -118,7 +118,7 @@ function yearView() {
 	// d3-array:https://github.com/mbostock/d3/wiki/Arrays
 	d3.csv("dataset/sample_data_v0.1.csv", function(csv) {
 		// console.log(csv);
-		csv = calendarModel.occupancy;
+		csv = calendarModel.totalBusyHours;
 		// console.log(csv);
 
 		var data = d3.nest() // Nesting reform the input array into an
@@ -127,7 +127,7 @@ function yearView() {
 			return d.date;
 		}) // the key(function) controls the level rule in the tree
 		.rollup(function(d) {
-			return d[0].hoursBusy;
+			return d[0].hours;
 		}) // The leaf level is replaced by a value at the parent level
 		// formerly, the value of each key is an array of an object
 		.map(csv); // The return value of the rollup function will replace the

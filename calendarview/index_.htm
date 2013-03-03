@@ -17,6 +17,7 @@
     <script type="text/javascript" src="js/CalendarModel.js"></script>
     <script type="text/javascript" src="js/ViewAndController.js"></script>
 	<script type='text/javascript' src='js/legend.js'></script>
+	<script type='text/javascript' src='js/yearView.js'></script>
     
 	<!---initialisation of the model and controller--->
     <script type="text/javascript" >
@@ -39,16 +40,7 @@
 
 			<button id='authorize-button'>Sign in with google</button>
 		    <div id="workspace"> </div> 
-		    <button id='show-button'>Show</button>
-		    <button id='legend-button'>Show Legend</button>		
-			<script type='text/javascript' src='js/yearView.js'></script>
-			<script>
-				var yearViewButton = document.getElementById('show-button');
-			                yearViewButton.onclick = yearView;
-				//yearView = new YearView(appModel);
-				var legendViewButton = document.getElementById('legend-button');
-			                legendViewButton.onclick = legendView;
-			</script>
+		   
 			<br><br>
 			<div>C3 adds a Yearly Overview to your Google Calendar. <br>
 			 Ranging from light to dark colors, it shows if <br>
