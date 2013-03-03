@@ -56,8 +56,56 @@ function yearView() {
 		return d;
 	}); // force the number to string, the d is every datum from the data
 
-	svg.append("text").attr("transform", "translate(" + 2 * cellSize + ",-15)")
-			.text("January");
+	svg.append("text")
+	.attr("transform", "translate(18,-5)")
+	.text("Jan");
+
+	svg.append("text")
+	.attr("transform", "translate(102,-5)")
+	.text("Feb");	
+
+	svg.append("text")
+	.attr("transform", "translate(176,-5)")
+	.text("Mar");	
+
+
+	svg.append("text")
+	.attr("transform", "translate(256,-5)")
+	.text("Apr");
+
+
+	svg.append("text")
+	.attr("transform", "translate(330,-5)")
+	.text("May");
+
+
+	svg.append("text")
+	.attr("transform", "translate(400,-5)")
+	.text("Jun");
+
+	svg.append("text")
+	.attr("transform", "translate(480,-5)")
+	.text("Jul");
+
+	svg.append("text")
+	.attr("transform", "translate(560,-5)")
+	.text("Aug");
+
+	svg.append("text")
+	.attr("transform", "translate(630,-5)")
+	.text("Sep");
+
+	svg.append("text")
+	.attr("transform", "translate(700,-5)")
+	.text("Oct");
+
+	svg.append("text")
+	.attr("transform", "translate(780,-5)")
+	.text("Nov");
+
+	svg.append("text")
+	.attr("transform", "translate(850,-5)")
+	.text("Dec");
 	// the structure: svg(areas)->g(graphs)->rect(days)
 
 	var rect = svg.selectAll(".day").data(function(d) {

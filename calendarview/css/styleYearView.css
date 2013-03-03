@@ -20,16 +20,16 @@ body {
 	font: 20px sans-serif;
             }            
 .canvas{
-	padding: 1em;
+	margin-right: 20px;
+	margin-left: 20px;
 }     
 #container
 {
-	width: 90%;
+	width: 1280px;
 	margin: 10px auto;
 	background-color: #fff;
 	color: #333;
 	border: 1px solid gray;
-	line-height: 130%;
 }
 #top{
 	padding: .5em;
@@ -43,7 +43,7 @@ body {
 }
 #leftnav
 {
-	width:210px;
+	width:180px;
 	height:500px;
 	float:left;
 	margin: 0;
@@ -57,7 +57,7 @@ body {
 #rightnav
 {
 	float: right;
-	width: 160px;
+	width: 100px;
 	margin: 0;
 	padding: 1em;
 }
