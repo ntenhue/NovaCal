@@ -35,7 +35,7 @@ fill:#aaaaaa;
 }     
 #container
 {
-	width: 1290px;
+	width: 1300px;
 	margin: 10px auto;
 	background-color: #fff;
 	color: #333;
@@ -68,7 +68,7 @@ fill:#aaaaaa;
 {
 	float: right;
 	width: 100px;
-	margin-right: 10px;
+	margin-right: 20px;
 	padding: 1em;
 }
 #footer
