@@ -11,10 +11,10 @@ function View(parent, calendarModel) {
 	this.updateViewButton.html("Show");
 
 	this.colorEventsButton = $("<button>");
-	this.colorEventsButton.html("events");
+	this.colorEventsButton.html("E");
 	
 	this.colorCalsButton = $("<button>");
-	this.colorCalsButton.html("calendars");
+	this.colorCalsButton.html("C");
 	
 	
 	this.colorMonthSpan = $("<span>");
@@ -30,9 +30,10 @@ function View(parent, calendarModel) {
 	 * 
 	 */
 	parent.append(/* this.listCalendarsButton, */this.listCalendarsForm,
-	/* this.getEventsButton, */this.updateViewButton, "<br>",
-	this.colorCalsButton, this.colorEventsButton, "<br>", this.colorMonthSpan);
+	/* this.getEventsButton, */this.updateViewButton);
 
+	$("#settings").append( this.colorCalsButton, this.colorEventsButton, "Color month by ", this.colorMonthSpan);
+	
 	/***************************************************************************
 	 * Observer implementation
 	 **************************************************************************/

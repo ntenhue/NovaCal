@@ -20,6 +20,10 @@ function AppGeneralController(appModel) {
             viewController = new ViewController(view, calendarModel);
             
             view.listCalendarsButton.click();
+            
+            yearView(null, view.listItem); legendView();
+            
+            
             }
 
         }
