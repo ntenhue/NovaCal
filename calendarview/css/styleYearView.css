@@ -47,11 +47,6 @@ font: 9px Tahoma;
 	background-color: #ddd;
 	border-bottom: 1px solid gray;
 }
-#top h1{
-	font: 20px Tahoma;
-	font-family: Helvetica, Arial, Verdana;
-	color: #333333;
-}
 #leftnav
 {
 	width:180px;
@@ -59,6 +54,11 @@ font: 9px Tahoma;
 	float:left;
 	margin: 0;
 	padding: 1em;
+}
+#leftnav h1{
+	font: 20px Tahoma;
+	font-family: Helvetica, Arial, Verdana;
+	color: #888888;
 }
 #leftnav h3{
 	font: 11px Tahoma;
