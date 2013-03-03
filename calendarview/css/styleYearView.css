@@ -1,5 +1,5 @@
 body {
-  font: 10px Tahoma;
+  font: 11px Tahoma;
   font-family: Helvetica, Arial, Verdana;
   shape-rendering: crispEdges;
 }
@@ -31,19 +31,18 @@ fill:#aaaaaa;
 	font: 20px sans-serif;
             }            
 .canvas{
-	margin-right: 20px;
-	margin-left: 20px;
+	margin:0px;
 }     
 #container
 {
-	width: 1280px;
+	width: 1290px;
 	margin: 10px auto;
 	background-color: #fff;
 	color: #333;
 	border: 1px solid gray;
 }
 #top{
-	padding: .5em;
+	padding: .1em;
 	background-color: #ddd;
 	border-bottom: 1px solid gray;
 }
@@ -69,7 +68,7 @@ fill:#aaaaaa;
 {
 	float: right;
 	width: 100px;
-	margin: 0;
+	margin-right: 10px;
 	padding: 1em;
 }
 #footer
