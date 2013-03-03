@@ -45,7 +45,7 @@ function MonthView(k, selected, yearNumber, monthNumber){
 		   
 		  data.forEach(function(d) {
 		    
-		    d.dgdsdgds = d.hoursByColor[0];
+		    d.color0 = d.hoursByColor[0];
 		    d.color1 = d.hoursByColor[1];
 		    d.color2 = d.hoursByColor[2];
 		    d.color3 = d.hoursByColor[3];
