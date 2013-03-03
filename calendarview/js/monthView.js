@@ -45,19 +45,19 @@ function MonthView(k, selected, yearNumber, monthNumber){
 		   
 		  data.forEach(function(d) {
 		    
-		    d.color0 = d.hoursByColor[0];
-		    d.color1 = d.hoursByColor[1];
-		    d.color2 = d.hoursByColor[2];
-		    d.color3 = d.hoursByColor[3];
-		    d.color4 = d.hoursByColor[4];
-		    d.color5 = d.hoursByColor[5];
-		    d.color6 = d.hoursByColor[6];
-		    d.color7 = d.hoursByColor[7];
-		    d.color8 = d.hoursByColor[8];
-		    d.color9 = d.hoursByColor[9];
-		    d.color10 = d.hoursByColor[10];
-		    d.color11 = d.hoursByColor[11];
-		    
+		    d.defaultcolor	= d.hoursByColor[0];
+		    d.lightblue 	= d.hoursByColor[1];
+		    d.lightgreen 	= d.hoursByColor[2];
+		    d.violet 		= d.hoursByColor[3];
+		    d.lightred 		= d.hoursByColor[4];
+		    d.gold 			= d.hoursByColor[5];
+		    d.orange 		= d.hoursByColor[6];
+		    d.turquoise 	= d.hoursByColor[7];
+		    d.grey 			= d.hoursByColor[8];
+		    d.blue 			= d.hoursByColor[9];
+		    d.green 		= d.hoursByColor[10];
+		    d.red 			= d.hoursByColor[11];
+		   
 		  });
 		
 		  color.domain( d3.keys(data[0]).filter( function(key) { 
