@@ -49,7 +49,7 @@ fill:#aaaaaa;
 #top h1{
 	font: 20px Tahoma;
 	font-family: Helvetica, Arial, Verdana;
-	color: #333333;
+	color: #444444;
 }
 #leftnav
 {
@@ -58,6 +58,11 @@ fill:#aaaaaa;
 	float:left;
 	margin: 0;
 	padding: 1em;
+}
+#leftnav h1{
+	font: 20px Tahoma;
+	font-family: Helvetica, Arial, Verdana;
+	color: #555555;
 }
 #leftnav h3{
 	font: 11px Tahoma;
