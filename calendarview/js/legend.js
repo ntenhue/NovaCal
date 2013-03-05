@@ -21,7 +21,7 @@ function legendView(){
         ["q12-11"],*/
     ];
 
-    var color_hash = {  0 : ["0-1 h", "rgb(255,255,220)"],
+    var color_hash = {  0 : ["0-1 hours busy", "rgb(255,255,220)"],
 		    			1 : ["1-2", "rgb(255,255,204)"],
 		    			2 : ["2-3", "rgb(255,237,160)"],
 		    			3 : ["3-4", "rgb(254,217,118)"],
@@ -37,23 +37,24 @@ function legendView(){
 		  }                     
     
 	// Create SVG element
-	var svg = d3.select("#mylegend") //body replaced by #mylegend
-	    .append("svg")
+	var svg = d3.select("#mylegend") //body replaced by #mylegend 
+	.append("svg")
 	    .attr("width", w)
 	    .attr("height", h);
-/*
+
 	// Add title	  
-	svg.append("svg:text")
-		   .attr("class", "title")
-	   .attr("x", 20)
-	   .attr("y", 20)
-	   .text("Yearly Overview of Your Google Calendar(s)");
+/*	svg.append("svg:text")
+	   //.attr("class", "title")
+		.style("fill", "grey")
+	   .attr("x", 0)
+	   .attr("y", 15)
+	   .text("Hours busy:");
 */
 
 	// add legend   
 	var legend = svg.append("g")
 	  .attr("class", "legend")
-	  .attr("x", w - 65)
+	  .attr("x", w - 100)
 	  .attr("y", 25)
 	  .attr("height", 100)
 	  .attr("width", 100);
@@ -64,16 +65,16 @@ function legendView(){
       .each(function(d, i) {
         var g = d3.select(this);
         g.append("rect")
-          .attr("x", w - 65)
-          .attr("y", i*25 +10)
+          .attr("x", w - 100)
+          .attr("y", i*15 +20)
           .attr("width", 10)
           .attr("height", 10)
           .style("fill", color_hash[String(i)][1])
-          .style("stroke", "grey");
+          .style("stroke", "#CCCCCC");
         
         g.append("text")
-          .attr("x", w - 50)
-          .attr("y", i * 25 + 18)
+          .attr("x", w - 85)
+          .attr("y", i * 15 + 29)
           .attr("height",30)
           .attr("width",100)
           .style("fill", "grey")

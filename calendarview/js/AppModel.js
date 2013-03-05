@@ -27,6 +27,25 @@ function AppModel(){
 	
 	
 	
+	this.cldrStatus = [];
+	this.setCldrStatus = function (index,value) {	
+		this.cldrStatus[index]=value;
+		this.notifyObservers("cldrStatus");
+		}
+	this.getCldrStatus = function (index) {	
+		return this.cldrStatus[index];
+		}	
+	
+	this.workingStatus;
+	this.setWorkingStatus = function (value) {	
+		this.workingStatus=value;
+		this.notifyObservers("workingStatus");
+		}
+	this.getWorkingStatus = function () {	
+		return this.workingStatus;
+		}		
+	
+	
 	/*****************************************  
 	    Observable implementation    
 	*****************************************/

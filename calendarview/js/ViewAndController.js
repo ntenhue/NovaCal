@@ -19,7 +19,10 @@ function View(parent, calendarModel) {
 	
 	this.colorMonthSpan = $("<span>");
 	this.colorMonthSpan.html(appModel.colorMonth);
+
 	
+	this.workingSpan = $('<span style="color:#CCCCCC">');
+
 	
 	/*
 	 * this.tableEvents = $("<table>"); this.tableEventsList = $("<tbody>");
@@ -30,7 +33,7 @@ function View(parent, calendarModel) {
 	 * 
 	 */
 	parent.append(/* this.listCalendarsButton, */this.listCalendarsForm,
-	/* this.getEventsButton, */this.updateViewButton);
+	/* this.getEventsButton, */this.updateViewButton, " ", this.workingSpan);
 
 	$("#settings").append( this.colorCalsButton, this.colorEventsButton, "Color bars: ", this.colorMonthSpan);
 	$("#settings").hide();
@@ -41,29 +44,89 @@ function View(parent, calendarModel) {
 
 	// Register an observer to the model
 	calendarModel.addObserver(this);
+	appModel.addObserver(this);
 
 	// This function gets called when there is a change at the model
-	this.update = function(arg) {
+	this.update = function(what, k) {
 
-		if (arg == "calendars") {
+		if (what == "calendars") {
 			this.listCalendarsForm.empty();
 
 			var calendars = calendarModel.getCalendars();
+			
 			this.listItem = [];
+			//this.listLabel = [];
+			this.statusLabel = [];
 			for ( var i in calendars) {
 				this.listItem[i] = $('<input type="checkbox" name="radioCalendars">');
 				// this.listItem[i].attr("value",i);
 				// this.listItem[i].attr("checked",false);
-				this.listItem[i].attr("id", "radioCalendar" + i);
+				// this.listItem[i].attr("id", "radioCalendar" + i);
 				var listLabel = $('<label>');
 				listLabel.attr("for", "radioCalendar" + i);
-				listLabel.html(calendars[i].summary + '<br>');
-				this.listCalendarsForm.append(this.listItem[i], listLabel);
+				listLabel.html(calendars[i].summary);
+				
+				this.statusLabel[i] = $('<span style="color:#CCCCCC">');
+				this.statusLabel[i].html(appModel.getCldrStatus(i));
+				
+				this.listCalendarsForm.append(this.listItem[i], listLabel, " ", this.statusLabel[i], "<br>");
 			}
 		}
 
-		if (arg == "events") {
+		
+		if (what == "yearview") {
+			var see = 0;
+			var k;
+			for ( var i in view.listItem) {	if (this.listItem[i].prop('checked')) {	see++; k = i;	}	}
 
+			if (see != 0) {	
+				if (see > 1) k=null;
+				
+			appModel.setWorkingStatus("updating year view...");
+			yearView(k, this.listItem, function(){appModel.setWorkingStatus("");});	
+			}
+		}
+		
+		if (what == "cldrStatus") {
+			for (var i in this.statusLabel) this.statusLabel[i].html(appModel.getCldrStatus(i));
+		}
+		
+		if (what == "workingStatus") {
+			this.workingSpan.html(appModel.getWorkingStatus());
+		}
+		
+		if (what == "monthview") {
+			var see = 0;
+			var k;
+			for ( var i in view.listItem) {	if (view.listItem[i].prop('checked')) {	see++; k = i;	}	}
+
+			if (see != 0 && appModel.selectedMonth!=null) {	
+				if (see > 1) k=null;
+				appModel.setWorkingStatus("updating month view...");
+				monthView = new MonthView (k, view.listItem,appModel.selectedYear,
+											  appModel.selectedMonth, 
+											  function(){appModel.setWorkingStatus("");	});
+				}else{ 
+				$("#monthViewCanvas").empty();
+				}
+			
+			this.colorMonthSpan.html(appModel.colorMonth);
+		}
+		
+		if (what == "events loaded") {
+			
+			appModel.setWorkingStatus("calculating occupancy...");
+			calendarModel.totalBusyHours = calendarModel.updateTotalBusyHours(calendarModel.calendars,	view.listItem);
+			
+			
+			view.update("yearview");
+			view.update("monthview");
+		
+			//if (this.listLabel[k].hasOwnProperty("loading"))this.listLabel[k].loading.remove();
+			
+			
+				
+			
 			// calendarModel.totalBusyHours=calendarModel.updateTotalBusyHours(calendarModel.calendars,this.listItem);
 			// yearView(); legendView();
 
@@ -104,86 +167,36 @@ function View(parent, calendarModel) {
 
 function ViewController(view, calendarModel) {
 
-	view.listCalendarsButton.click(function() {
-		askGoogle.loadCalendars();
-	});
-
-	/*
-	 * view.getEventsButton.click(function () { //var k =
-	 * $('input[name=radioCalendars]:checked').val(); //if
-	 * (k!=null)askGoogle.checkUpdatesAndLoad(k);
-	 * 
-	 * for (var k in view.listItem) { if
-	 * (view.listItem[k].prop('checked'))askGoogle.checkUpdatesAndLoad(k); }
-	 * 
-	 * 
-	 * });
-	 */
-	
-	view.colorCalsButton.click(function() {	
-		appModel.colorMonth="byCalendars";
-		view.colorMonthSpan.html(appModel.colorMonth);	
-		var see = 0;
-		var k;
-		for ( var i in view.listItem) {	if (view.listItem[i].prop('checked')) {	see++;k = i;	}	}
-
-		if (see != 0) {	
-				if (see == 1) {
-					monthView = new MonthView (k, view.listItem,appModel.selectedYear,appModel.selectedMonth);
-				} else {
-					monthView = new MonthView (null, view.listItem,appModel.selectedYear,appModel.selectedMonth);
-				}
-
-			}
-		
-	});
-	
-	view.colorEventsButton.click(function() {appModel.colorMonth="byEvents";
-		view.colorMonthSpan.html(appModel.colorMonth);
-		var see = 0;
-		var k;
-		
-		for ( var i in view.listItem) {	if (view.listItem[i].prop('checked')) {	see++;k = i;	}	}
-
-		if (see != 0) {	
-				if (see == 1) {
-					monthView = new MonthView (k, view.listItem,appModel.selectedYear,appModel.selectedMonth);
-				} else {
-					monthView = new MonthView (null, view.listItem,appModel.selectedYear,appModel.selectedMonth);
-				}
-
-			}
-		
-		});
+	view.colorCalsButton.click(function() {	appModel.colorMonth="byCalendars";	view.update("monthview"); });
+	view.colorEventsButton.click(function() { appModel.colorMonth="byEvents"; 	view.update("monthview"); });
 
 	view.updateViewButton.click(function() {
 		var see = 0;
 		var k;
 
+		for ( var i in view.listItem) {if (view.listItem[i].prop('checked')) {	
+			askGoogle.checkUpdatesAndLoad(i);
+			see++;
+			}}
+		
+		setTimeout(function() {
 		for ( var i in view.listItem) {
-			if (view.listItem[i].prop('checked')) {	askGoogle.checkUpdatesAndLoad(i);
-				see++;k = i;	}	}
+			if (view.listItem[i].prop('checked') 
+			&&!(appModel.getCldrStatus() == "updated" 
+			  ||appModel.getCldrStatus() == "loaded")) {	see=0;
+			}}	
+		}, 500);
 
-		if (see != 0) {	setTimeout(function() {
+		
+		if (see != 0) {	
+			appModel.setWorkingStatus("calculating occupancy...");
+			calendarModel.totalBusyHours = calendarModel.updateTotalBusyHours(calendarModel.calendars,	view.listItem);
+			
+			view.update("yearview");
+			view.update("monthview");
+			}
 
-				calendarModel.totalBusyHours = calendarModel.updateTotalBusyHours(calendarModel.calendars,	view.listItem);
-
-				if (see == 1) {
-					yearView(k, view.listItem);	legendView();
-					
-					if (appModel.selectedMonth!=null) {
-					monthView = new MonthView (k, view.listItem,appModel.selectedYear,appModel.selectedMonth);
-					}
-				} else {
-					yearView(null, view.listItem);	legendView();
-					if (appModel.selectedMonth!=null) {
-						monthView = new MonthView (null, view.listItem,appModel.selectedYear,appModel.selectedMonth);
-						}
-					
-				}
-
-			}, 1000);}
-
-	});
-
-}
+		});
+	
+	}
+	

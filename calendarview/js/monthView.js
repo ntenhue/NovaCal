@@ -1,4 +1,4 @@
-function MonthView(k, selected, yearNumber, monthNumber){
+function MonthView(k, selected, yearNumber, monthNumber, callback){
 	
 	$("#monthViewCanvas").empty();
 	
@@ -160,5 +160,6 @@ function MonthView(k, selected, yearNumber, monthNumber){
 		  
 		  d3.select(self.frameElement).style("height", "2910px");
 
-	
+		  
+	callback();
 }

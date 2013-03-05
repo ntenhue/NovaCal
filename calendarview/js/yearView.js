@@ -1,4 +1,4 @@
-function yearView(k, selected) {
+function yearView(k, selected, callback) {
 	$("#yearViewCanvas").empty();
 	var width = 960, height = 186, cellSize = 17; // cell size
 	var day = d3.time.format("%w"), // %w weekday as a decimal number
@@ -134,7 +134,8 @@ function yearView(k, selected) {
 				
 				monthView = new MonthView(k, selected,
 						+this.attributes.yearNumber.value,
-						+this.attributes.monthNumber.value);
+						+this.attributes.monthNumber.value,
+						function(){});
 				$(this).css("fill", "#559393");
 			});
 
@@ -207,4 +208,7 @@ function yearView(k, selected) {
 		}
 	}
 	d3.select(self.frameElement).style("height", "2910px");
+	
+	
+	callback();
 }

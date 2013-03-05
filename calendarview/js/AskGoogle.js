@@ -14,6 +14,8 @@ function AskGoogle(calendarModel) {
 	
 	
 	this.checkUpdatesAndLoad = function(k) {
+		appModel.setCldrStatus(k,"checking...");
+		
 		this.request = gapi.client.calendar.events.list({
 			'calendarId': calendarModel.calendars[k].id, 
 			'fields': 'updated',
@@ -22,14 +24,18 @@ function AskGoogle(calendarModel) {
 		this.request.execute(function(resp) {
 			console.log(calendarModel.calendars[k].summary, "checking calendar updates:", resp.updated);
 			
+			
 			if(resp.updated == calendarModel.calendars[k].updated
 			&& calendarModel.calendars[k].events != null) {
 				console.log(calendarModel.calendars[k].summary, "already up-to-date")
-
+				appModel.setCldrStatus(k,"updated");
 			}else{
 				console.log(calendarModel.calendars[k].summary, "updates found"); 
 				
+				appModel.setCldrStatus(k,"<br>clearing events...");
 				calendarModel.clearEvents(k);
+				
+				appModel.setCldrStatus(k,"<br>loading events...");
 				askGoogle.loadEvents(k,null);
 				
 				
@@ -51,6 +57,8 @@ function AskGoogle(calendarModel) {
 			'fields': 'items(colorId,start,end,summary,id),nextPageToken,updated',
 			'pageToken': pageToken
 			});
+		
+		
 		
 		this.request.execute(function(resp){
 			console.log(calendarModel.calendars[k].summary, "received events list:", resp); 

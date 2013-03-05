@@ -16,14 +16,13 @@ function AppGeneralController(appModel) {
         if (arg == 'libraryStatus' && appModel.getLibraryStatus()) {
             calendarModel = new CalendarModel();
             askGoogle = new AskGoogle(calendarModel);
+            askGoogle.loadCalendars();            
+            
             view = new View($("#workspace"), calendarModel);
-            
-            
             viewController = new ViewController(view, calendarModel);
             
-            view.listCalendarsButton.click();
-            
-            yearView(null, view.listItem); legendView();
+            yearView(null, view.listItem, function(){}); 
+            legendView();
             
             
             

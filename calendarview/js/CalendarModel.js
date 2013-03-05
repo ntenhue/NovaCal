@@ -16,26 +16,36 @@ this.addCalendars = function (items) {
 		items.busyHours = [];
 		}
 	this.calendars = this.calendars.concat(items);
-	this.notifyObservers("calendars");	
+	
+	for (var i in this.calendars){	appModel.setCldrStatus(i,"");}
+	this.notifyObservers("calendars",null);	
 	}
 
 this.addEvents = function (k, items, upd, nextPageToken) {	
 	this.calendars[k].updated= upd;
 	this.calendars[k].events = this.calendars[k].events.concat(items);
+
 	this.calendars[k].events = this.updateEventsDuration(this.calendars[k].events);
 	this.calendars[k].events = this.updateEventColor(this.calendars[k].events);
+	
+	appModel.setCldrStatus(k,"<br>loading events... "+this.calendars[k].events[this.calendars[k].events.length-1].start.date);
+	
+
 	
 	if (nextPageToken==null){
 		// if this is a last or the only page of events
 		this.calendars[k].busyHours = this.updateBusyHours(this.calendars[k].events);
 		//this.totalBusyHours = this.updateTotalBusyHours(this.calendars);
-		this.notifyObservers("events");
+		appModel.setCldrStatus(k,"loaded");
+		this.notifyObservers("events loaded",k);
 		}
 	}	
 
 this.clearCalendars = function () {	
+	for (var i in this.calendars){	appModel.setCldrStatus(i,"cleared");}
 	this.calendars=[];
 	this.totalBusyHours = []; 
+	appModel.cldrsMeta = [];
 	this.notifyObservers("calendars");	
 	}	
 
@@ -44,7 +54,8 @@ this.clearEvents = function (k) {
 	this.calendars[k].updated = [];
 	this.calendars[k].busyHours = [];
 	//this.totalBusyHours = this.updateTotalBusyHours(this.calendars);
-	this.notifyObservers("events");	
+	appModel.setCldrStatus(k,"events cleared");
+	this.notifyObservers("events cleared",k);	
 	}	
 
 this.getCalendars = function () { return this.calendars;	        }
@@ -289,11 +300,11 @@ this.addObserver = function(observer)
 	this._observers.push(observer);
 }
 
-this.notifyObservers = function(arg) 
+this.notifyObservers = function(what,k) 
 {
 	for(var i=0; i<this._observers.length; i++) 
 	{
-		this._observers[i].update(arg);
+		this._observers[i].update(what,k);
 	}	
 }
 	
