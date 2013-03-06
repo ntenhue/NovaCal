@@ -20,7 +20,7 @@ function yearView(k, selected, callback) {
 	// .map - Create a new array with the result of a function of every element
 	// in the array.
 	var svg = d3.select("#yearViewCanvas").selectAll("svg")
-			.data([ 2012, 2013 ]).enter().append("svg").attr("width", width)
+			.data([ appModel.yearFirst, appModel.yearLast ]).enter().append("svg").attr("width", width)
 			// each node is a svg with the preset width& height
 			.attr("height", height).attr("class", "RdYlGn") // and class RdYlGn
 			.append("g").attr(

@@ -54,6 +54,7 @@ function AskGoogle(calendarModel) {
 			'singleEvents': true,
 			'showDeleted': false,
 			'orderBy': 'startTime',
+			'timeMax': (appModel.yearLast+1)+'-01-01T00:00:00+01:00', //exclusive
 			'fields': 'items(colorId,start,end,summary,id),nextPageToken,updated',
 			'pageToken': pageToken
 			});

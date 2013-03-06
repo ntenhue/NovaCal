@@ -10,6 +10,9 @@ function AppGeneralController(appModel) {
     //Register an observer to the model
     appModel.addObserver(this);
 
+    
+    
+    
     //This function gets called when there is a change at the model
     this.update = function(arg) {
     //setTimeout(function() {}, 2000);
@@ -23,10 +26,13 @@ function AppGeneralController(appModel) {
             
             yearView(null, view.listItem, function(){}); 
             legendView();
-            
-            
-            
-            }
 
+            }
         }
+    
+    
+    	this.about = function(){
+    		
+    	}
     }
+

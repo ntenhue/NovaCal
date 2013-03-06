@@ -11,6 +11,13 @@ function AppModel(){
 	this.loginStatus = false;
 	this.libraryStatus = false;
 	
+	this.yearFirst = 2012;
+	this.yearLast = 2013;
+	
+	this.selectedYear;
+	this.selectedMonth;
+	
+	
 	this.setLoginStatus = function (value) {	
 		this.loginStatus=value;
 		this.notifyObservers("loginStatus");	}	
